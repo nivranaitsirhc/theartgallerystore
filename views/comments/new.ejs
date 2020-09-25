@@ -1,0 +1,20 @@
+<%-include("../partials/header")%>
+	<div class="col-md-12 text-center">
+		<h1 class="my-6">Add New Comment to <%=artgallery.name%></h1>
+	</div>
+	<div class="container justify-content-center" id="fomrtemplate">
+		<form class="form-style" action="/artgallery/<%=artgallery._id%>/comments" method="POST">
+			<div class="form-group">
+				<textarea class="form-control fixed" rows="5" name="comment[text]" placeholder="Write your comment here..." spellcheck="true" autofocus="true"o></textarea>
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" value="<%=currentUser.username%>" readonly>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary btn-lg btn-block">Submit</button>
+			</div>
+			<a class="d-block" href="/artgallery/<%=artgallery_id%>">Go Back</a>
+		</form>
+	
+	</div>
+<%-include("../partials/footer")%>

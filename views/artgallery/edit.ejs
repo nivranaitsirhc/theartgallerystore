@@ -1,0 +1,50 @@
+<%-include("../partials/header")%>
+	<div class="text-center">
+		<h1 class="my-3 ">Edit <strong><%=artgallery.title%></strong></h1>
+	</div>
+	<div class="container justify-content-center" id="formtemplate">
+		<form class="form-style" action="/artgallery" method="POST" >
+			<div class="form-group">
+				<label for="name">Title</label>
+				<input id="name" class="form-control" required type="text" name="title" placeholder="Title" value="<%=artgallery.title%>">
+			</div>
+			<div class="form-group">
+				<label for="price">Price</label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">&#8369;</span>
+					</div>
+					<input id="price" class="form-control" type="number" name="price" placeholder="Price" min="0" step="0.01" value="<%=artgallery.price%>">
+				</div>
+			</div>
+			<div class="form-group mb-3">
+				<label for="image">Image url</label>
+				<input id="image" class="form-control" required type="text" name="image" value="<%=artgallery.image%>" placeholder="http(s)://" title="Please fill-in a valid url" required pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg)|(\/[\w\W]+\.(jpg|png|svg)|[\w]+\/[\w\W]+\.(jpg|png|svg))">
+			</div>
+			<div class="form-group mb-3">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<label class="input-group-text" for="inputGroupSelect01">Status</label>
+					</div>
+					<select required name="status" class="custom-select" id="inputGroupSelect">
+						<%statusList.forEach(x =>{%>
+							<option value='{"value":<%=x.value%>,"desc":"<%=x.name%>"}'
+								<%if(artgallery.status.value == x.value){%>
+									selected
+								<%}%>
+							><%=x.name%></option>
+						<%})%>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="description">Description</label>
+				<textarea id="description"class="form-control" name="description" placeholder="Description" autofocus="true" rows="3" ><%=artgallery.description%></textarea>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary btn-lg btn-block">Submit</button>
+			</div>
+			<a class="d-block" href="/artgallery">Go Back</a>
+		</form>
+	</div>
+<%-include("../partials/footer")%>

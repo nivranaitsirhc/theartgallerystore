@@ -1,0 +1,48 @@
+<%-include("../partials/header")%>
+<div class="container text-center" id="signtemplate">
+
+	<form class="form-signin" action="/signup" method="POST">
+		<div class="text-center mb-4">
+			<!-- <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
+			<h1 class="h3 mb-3 font-weight-normal">New Account</h1>
+		</div>
+		<div class="form-label-group">
+			<input name="firstName" type="text" id="inputFname" class="form-control" placeholder="First Name" required autofocus>
+			<label for="inputFname">First Name</label>
+		</div>
+
+		<div class="form-label-group">
+			<input name="middleName" type="text" id="inputMname" class="form-control" placeholder="Middle Name "  autofocus>
+			<label for="inputMname">Middle Name (or Initial)</label>
+		</div>
+
+		<div class="form-label-group">
+			<input name="lastName" type="text" id="inputLname" class="form-control" placeholder="Family Name" required autofocus>
+			<label for="inputLname">Family Name</label>
+		</div>
+
+		<div class="form-label-group">
+			<input name="dateOfBirth" type="date" id="inputDoB" class="form-control" placeholder="<%=Date.now%>" required autofocus>
+			<label for="inputDoB">Date of Birth</label>
+		</div>
+
+		<div class="form-label-group">
+			<input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+			<label for="inputUsername">Username</label>
+		</div>
+
+		<div class="form-label-group">
+			<input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+			<label for="inputPassword">Password</label>
+		</div>
+
+		<!-- <div class="checkbox mb-3">
+			<label>
+				<input type="checkbox" value="remember-me"> Remember me
+			</label>
+		</div> -->
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+		<p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2020</p>
+	</form>
+</div>
+<%-include("../partials/footer")%>
