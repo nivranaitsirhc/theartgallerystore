@@ -85,8 +85,8 @@ app.use('/artgallery/:id/comments',commentsRoutes);
 
 
 // express listen
-const PORT = process.env.PORT || 3000
-const IP = process.env.IP || "127.0.0.1"
-app.listen(PORT,IP, ()=> {
+const APP_PORT = process.env.PORT || 3000
+const APP_IP = process.env.IP || "127.0.0.1"
+app.listen(APP_PORT,APP_IP, ()=> {
 	console.log("Art Store Gallery Server is Listening...")
 });
