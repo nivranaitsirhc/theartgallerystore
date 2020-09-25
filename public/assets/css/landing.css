@@ -41,22 +41,22 @@ body {
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(/img/m_1.jpg) 
+  background-image: url(https://cdn.pixabay.com/photo/2020/08/23/14/55/castle-5511046_960_720.jpg) 
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(/img/m_2.jpg);
+  background-image: url(https://cdn.pixabay.com/photo/2015/06/19/21/24/the-road-815297_960_720.jpg);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(/img/m_3.jpg);
+  background-image: url(https://cdn.pixabay.com/photo/2013/11/15/13/57/california-210913_960_720.jpg);
   animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-  background-image: url(/img/m_4.jpg);
+  background-image: url(https://cdn.pixabay.com/photo/2020/07/04/06/29/mountains-5368407_960_720.jpg);
   animation-delay: 30s; 
 }
 .slideshow li:nth-child(5) { 
-  background-image: url(/img/m_5.jpg);
+  background-image: url(https://cdn.pixabay.com/photo/2020/09/15/08/05/sunrise-5572962_960_720.jpg);
   animation-delay: 40s; 
 }
 
