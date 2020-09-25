@@ -66,9 +66,6 @@ app.use(methodOverride('_method'));
 app.use(flash());
 
 
-// clean and seed the database 
-//seedDB();
-
 // meddleware to make available of our currentUser in all routes. used in header.ejs
 app.use((req,res,next)=>{
 	res.locals.currentUser	= req.user;
