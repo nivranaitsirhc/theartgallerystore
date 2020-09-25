@@ -32,7 +32,6 @@ mongoose.connect(MONGODB_URL, {
 
 // express 
 const app = express();
-const port = 3000;
 
 // express config to view ejs
 app.set('view engine', 'ejs');
