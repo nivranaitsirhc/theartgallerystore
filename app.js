@@ -12,8 +12,7 @@ const	express 	= require('express'),
 // models
 const	User 		= require('./models/user'),
 		Campground 	= require('./models/artgallery'),
-		Comment 	= require('./models/comment')
-		seedDB		= require('./seeds');
+		Comment 	= require('./models/comment');
 
 // routes
 const 	artgalleryRoutes	= require('./routes/artgallery'),
@@ -24,7 +23,8 @@ const 	artgalleryRoutes	= require('./routes/artgallery'),
 const 	middleware 	= require('./middleware');
 
 // config connect to mongodb 
-mongoose.connect('mongodb://localhost:27017/artgallery_db', {
+const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/artgallery_db'
+mongoose.connect(MONGODB_URL, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true
@@ -85,6 +85,8 @@ app.use('/artgallery/:id/comments',commentsRoutes);
 
 
 // express listen
-app.listen(3000, ()=> {
+const PORT = process.env.PORT || 3000
+const IP = process.env.IP || "127.0.0.1"
+app.listen(PORT,IP, ()=> {
 	console.log("Art Store Gallery Server is Listening...")
 });
