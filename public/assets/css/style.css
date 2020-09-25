@@ -1,0 +1,44 @@
+/*Style for textarea*/
+textarea {
+ 	resize: vertical;
+}
+
+
+/*form styling*/
+div#formtemplate {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  /*background-color: #f5f5f5;*/
+}
+form.form-style {
+  width: 100%;
+  max-width: 420px;
+  padding: 15px;
+  margin: auto;
+}
+
+
+
+/*Style for cards in /artgallery*/
+#card-container {
+	padding: 0;
+}
+
+/*Style for flash message*/
+#flash-container
+
+#btn-marg {
+	margin-bottom: 10px;
+}
+
+.form-inline {
+	display: inline;
+}
+
+.alert {
+	text-align: center
+}
