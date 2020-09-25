@@ -66,6 +66,9 @@ app.use(methodOverride('_method'));
 app.use(flash());
 
 
+// clean and seed the database 
+//seedDB();
+
 // meddleware to make available of our currentUser in all routes. used in header.ejs
 app.use((req,res,next)=>{
 	res.locals.currentUser	= req.user;
@@ -82,8 +85,7 @@ app.use('/artgallery/:id/comments',commentsRoutes);
 
 
 // express listen
-const APP_PORT = process.env.PORT || 3000
-const APP_IP = process.env.IP || "127.0.0.1"
-app.listen(APP_PORT,APP_IP, ()=> {
+const port = process.env.PORT || 3000
+app.listen(port, ()=> {
 	console.log("Art Store Gallery Server is Listening...")
 });
