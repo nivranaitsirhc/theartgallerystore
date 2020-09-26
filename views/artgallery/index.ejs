@@ -1,9 +1,13 @@
 <%-include("../partials/header" )%>
-	<div class="jumbotron mt-3">
-		<h1 class="display-4">The Art Store Gallery</h1>
-		<p class="lead">View Eastern Visayas Finest Gallery</p>
-		<hr class="my-4">
-		<a class="btn btn-primary btn-lg" href="/artgallery/new" role="button">Add New Art</a>
+	<div class="jumbotron mt-3 d-flex flex-column">
+		<div>
+			<h1 class="display-5">The Art Store Gallery</h1>
+			<p class="lead">A picture is worth a thousand words...</p>
+			<hr style="border-style: solid;border-color: grey">
+		</div>
+		<div>
+			<a class="btn btn-primary btn-lg float-right" href="/artgallery/new" role="button">Add New Art</a>
+		</div>
 	</div>
 	<div class="container" id="card-container">
 		<div class="row">
@@ -14,6 +18,11 @@
 					  	<div class="card-body">
 							<h5><strong><%=x.title %></strong></h5>
 							<a class="btn btn-primary btn-sm"href="/artgallery/<%=x._id%>" class="">More info</a>
+							<%if(currentUser && x.author.id.equals(currentUser._id)){%>
+								<form class="form-inline"action="/artgallery/<%=x._id%>?_method=DELETE" method="POST">
+									<button class="btn btn-danger btn-sm">Delete</button>
+								</form>
+							<%}%>
 						</div>
 					</div>
 				</div>
