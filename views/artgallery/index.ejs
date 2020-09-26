@@ -17,7 +17,7 @@
 					  	<img class="card-img-top" src="<%=x.image%>" class="" alt="">
 					  	<div class="card-body">
 							<h5 ><strong><%=x.title %></strong></h5>
-							<p><%=x.description.substring(0,50)%></p>
+							<p><%=x.description.substring(0,26)%>...</p>
 							<a class="btn btn-primary btn-sm"href="/artgallery/<%=x._id%>" class="">More info</a>
 							<%if(currentUser && x.author.id.equals(currentUser._id)){%>
 								<form class="form-inline"action="/artgallery/<%=x._id%>?_method=DELETE" method="POST">
