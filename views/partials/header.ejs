@@ -13,9 +13,17 @@
 	<script type="text/javascript" src="/assets/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 	<!-- Custom Stylesheet -->
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-	<%if(typeof page !== 'undefined' && (page === 'signup' || page === 'login')){%>
-		<!-- Auth Style -->
-		<link rel="stylesheet" type="text/css" href="/assets/css/auth.css">
+	<%if(typeof page !== 'undefined'){%>
+		<%if(page === 'signup' || page === 'login'){%>
+			<!-- Auth Style -->
+			<link rel="stylesheet" type="text/css" href="/assets/css/auth.css">
+		<%}%>
+		<%if(page === 'landing'){%>
+			<!-- Landing Style -->
+			<link rel="stylesheet" type="text/css" href="/assets/css/landing.css">
+			<!-- Landing Js -->
+			<script type="text/javascript" src="/assets/js/libs/modernizr/2.8.3-modernizr.min.js" async></script>
+		<%}%>
 	<%}%>
 	<title>The Art Store Gallery</title>
 </head>

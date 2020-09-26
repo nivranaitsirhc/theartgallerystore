@@ -11,7 +11,7 @@ const   middleware = require('../middleware');
 
 //root route
 router.get("/", (req, res)=>{
-    res.render("landing");
+    res.render("landing",{page:'landing'});
 });
 
 // show register form

@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>The Art Store Gallery</title>
-        <link rel="stylesheet" href="/assets/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/assets/css/landing.css">
-        <script src="/assets/js/libs/modernizr/2.8.3-modernizr.min.js" type="text/javascript" async></script>
-    </head>
-    <body>
-
+<%-include('partials/header')%>
     <div class="container">
         <% if(msg_error && msg_error.length > 0){ %>
             <div class="alert alert-danger" role="alert">
@@ -21,9 +12,13 @@
         <% } %>
     </div>
 
-    <div id="landing-header">
-        <h1>Welcome to Art Store Gallery!</h1>
-        <a href="/artgallery" class="btn btn-lg btn-success">View all Art's</a>
+    <div class="d-flex flex-column justify-content-center" id="landing-header">
+        <div>
+            <h1>Welcome to Art Store Gallery!</h1>
+        </div>
+        <div>
+            <a href="/artgallery" class="btn btn-lg btn-success">View all Art's</a>
+        </div>
     </div>
 
     <ul class="slideshow">
@@ -33,5 +28,4 @@
       <li></li>
       <li></li>
     </ul>
-
 <%-include('partials/footer')%>
