@@ -7,7 +7,9 @@ const	express 	= require('express'),
 		methodOverride = require('method-override'),
 		localStrategy = require('passport-local'),
 		flash		= require('connect-flash'),
-		moment		= require('moment');
+		moment		= require('moment'),
+		session 	= require('express-session'),
+		MongoDBStore = require('connect-mongodb-session')(session);
 
 // models
 const	User 		= require('./models/user'),
@@ -22,6 +24,9 @@ const 	artgalleryRoutes	= require('./routes/artgallery'),
 // middlewares
 const 	middleware 	= require('./middleware');
 
+// express 
+const app = express();
+
 // config connect to mongodb 
 const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/artgallery_db'
 mongoose.connect(MONGODB_URL, {
@@ -30,8 +35,24 @@ mongoose.connect(MONGODB_URL, {
 	useCreateIndex: true
 });
 
-// express 
-const app = express();
+// config mongodbstore
+const store = new MongoDBStore({
+	uri: MONGODB_URL,
+	collection: 'mySessions'
+});
+
+// passport-configuration
+app.use(require('express-session')({
+	secret: 'a picture is worth a thousand words',
+	cookie : {
+		maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+	},
+	store: store, // use mongodbstrore
+	resave: false,
+	saveUninitialized: false
+}));
+
+
 
 // express config to view ejs
 app.set('view engine', 'ejs');
@@ -45,12 +66,7 @@ app.use(express.static(__dirname+'/public'));
 
 
 
-// passport-configuration
-app.use(require('express-session')({
-	secret: 'a picture is worth a thousand words',
-	resave: false,
-	saveUninitialized: false
-}));
+
 // express - use passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -64,9 +80,6 @@ app.use(methodOverride('_method'));
 // express - use flash
 app.use(flash());
 
-
-// clean and seed the database 
-//seedDB();
 
 // meddleware to make available of our currentUser in all routes. used in header.ejs
 app.use((req,res,next)=>{
