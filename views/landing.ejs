@@ -1,18 +1,6 @@
-<%-include('partials/header')%>
-    <div class="container">
-        <% if(msg_error && msg_error.length > 0){ %>
-            <div class="alert alert-danger" role="alert">
-                <%= msg_error %>
-            </div>
-        <% } %>
-        <% if(msg_success && msg_success.length > 0){ %>
-            <div class="alert alert-success" role="alert">
-                <%= msg_success %>
-            </div>
-        <% } %>
-    </div>
+<%-include('partials/header')%>\
 
-    <div class="d-flex flex-column justify-content-center" id="landing-header">
+    <div class="container text-center .header-text" id="landing-header">
         <div>
             <h1>Welcome to Art Store Gallery!</h1>
         </div>
