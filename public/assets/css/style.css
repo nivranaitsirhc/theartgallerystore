@@ -1,8 +1,13 @@
 /*Body*/
 body {
   font-family: Raleway;
+  color: rgb(254, 253, 253);
+  background-color: rgb(20, 20, 20);
 }
 
+#card-text-color {
+  color:rgb(20, 20, 20);
+}
 
 /*Style for textarea*/
 textarea {

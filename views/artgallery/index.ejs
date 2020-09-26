@@ -13,10 +13,11 @@
 		<div class="row">
 			<%artgallery.forEach((x)=>{ %>
 				<div class="col-sm-6 col-md-4 col-lg-3 mb-3">
-				  	<div class="card">
+				  	<div class="card" id="card-text-color">
 					  	<img class="card-img-top" src="<%=x.image%>" class="" alt="">
 					  	<div class="card-body">
-							<h5><strong><%=x.title %></strong></h5>
+							<h5 ><strong><%=x.title %></strong></h5>
+							<p><%=x.description.substring(0,50)%></p>
 							<a class="btn btn-primary btn-sm"href="/artgallery/<%=x._id%>" class="">More info</a>
 							<%if(currentUser && x.author.id.equals(currentUser._id)){%>
 								<form class="form-inline"action="/artgallery/<%=x._id%>?_method=DELETE" method="POST">
