@@ -9,6 +9,10 @@ body {
   color:rgb(20, 20, 20);
 }
 
+.jumbotron div h1{
+  font-size: 3.5rem;
+}
+
 /*Style for textarea*/
 textarea {
  	resize: vertical;
