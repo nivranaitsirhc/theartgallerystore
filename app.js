@@ -45,7 +45,7 @@ const store = new MongoDBStore({
 });
 
 app.use(cache({
-	'/**' : 1000*60*60*24*7*12 //1year
+	'/**' : 5 //1year
 }));
 
 // passport-configuration

@@ -1,20 +1,20 @@
-html {
+
+html,body {
+  color: rgb(254, 253, 253);
+  background-color: rgb(20, 20, 20);
   font-family: Raleway;
 }
 
-/*Body*/
-body {
-  color: rgb(254, 253, 253);
-  background-color: rgb(20, 20, 20);
+hr {
+    margin: 0 auto;
+    margin-top: 40px;
+    width: 50%;
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
 }
 
-#card-text-color {
-  color:rgb(20, 20, 20);
-}
 
-.jumbotron div h1{
-  font-size: 3.5rem;
-}
 
 /*Style for textarea*/
 textarea {
@@ -35,6 +35,25 @@ form.form-style {
   max-width: 420px;
   padding: 15px;
   margin: auto;
+}
+
+
+#card-text-color {
+  color:rgb(20, 20, 20);
+}
+
+.jumbotron div h1{
+  font-size: 3.5rem;
+}
+
+.commentBox {
+  border: 2px solid rgba(0, 0, 0,0.1);
+  border-radius: 24px;
+  padding: 10px;
+}
+
+.commentBox:hover {
+  background: rgba(10,10,48,0.3);
 }
 
 .header-text {

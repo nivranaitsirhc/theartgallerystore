@@ -1,7 +1,15 @@
 const mongoose = require('mongoose');
 
 let commentSchema = new mongoose.Schema({
+	title: String,
 	text: String,
+	art: {
+		id: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Artgallery"
+		},
+		title: String
+	},
 	author: {
 		id: {
 			type: mongoose.Schema.Types.ObjectId,

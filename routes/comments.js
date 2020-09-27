@@ -39,6 +39,8 @@ router.post('/',middleware.isLoggedIn,(req,res)=>{
 					// add username and id to comment
 					comment.author.id = req.user._id;
 					comment.author.username = req.user.username;
+					comment.art.id = artgallery._id;
+					comment.art.title = artgallery.title;
 					comment.save();
 					//
 					artgallery.comments.push(comment);
