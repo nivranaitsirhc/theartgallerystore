@@ -34,7 +34,8 @@ const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/artgal
 mongoose.connect(MONGODB_URL, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
-	useCreateIndex: true
+	useCreateIndex: true,
+	useFindAndModify: false
 });
 
 // config mongodbstore
