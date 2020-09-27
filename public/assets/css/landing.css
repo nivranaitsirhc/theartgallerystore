@@ -41,22 +41,22 @@ body {
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(https://cdn.pixabay.com/photo/2020/08/23/14/55/castle-5511046_960_720.jpg) 
+  background-image: linear-gradient(-20deg, #ddd6f3 0%, #faaca8 100%, #faaca8 100%); 
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(https://cdn.pixabay.com/photo/2015/06/19/21/24/the-road-815297_960_720.jpg);
+  background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(https://cdn.pixabay.com/photo/2013/11/15/13/57/california-210913_960_720.jpg);
+  background-image: linear-gradient(60deg, #64b3f4 0%, #c2e59c 100%);
   animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-  background-image: url(https://cdn.pixabay.com/photo/2020/07/04/06/29/mountains-5368407_960_720.jpg);
+  background-image: linear-gradient(to top, #cc208e 0%, #6713d2 100%);
   animation-delay: 30s; 
 }
 .slideshow li:nth-child(5) { 
-  background-image: url(https://cdn.pixabay.com/photo/2020/09/15/08/05/sunrise-5572962_960_720.jpg);
+  background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
   animation-delay: 40s; 
 }
 

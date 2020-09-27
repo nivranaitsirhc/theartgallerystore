@@ -1,8 +1,9 @@
 
 html,body {
   color: rgb(254, 253, 253);
-  background-color: rgb(20, 20, 20);
   font-family: Raleway;
+  background-image: linear-gradient(0deg, #29323c 0%, #485563 100%);
+  background-position: fixed-center;
 }
 
 hr {
@@ -42,6 +43,14 @@ form.form-style {
   color:rgb(20, 20, 20);
 }
 
+.jumbotron {
+  padding-top: 1.6rem;
+  padding-bottom: 1.6rem;
+  background: #232526;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
 .jumbotron div h1{
   font-size: 3.5rem;
 }
