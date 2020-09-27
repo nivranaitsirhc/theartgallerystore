@@ -8,19 +8,21 @@
 				<p class="card-text"><%=artgallery.description%></p>
 
 				<h1 class="card-title"><strong><%=artgallery.name%></h1></strong>
-				<h4 class="float-right">&#8369; <%=artgallery.price%></h4>
+				<%if(artgallery.price && artgallery.price > 0){%>
+					<h4 class="float-right">&#8369; <%=artgallery.price%></h4>
+				<%}%>
 				<div>
 					<em>Submitted by: <strong><%=artgallery.author.username%></strong></em>
-					<span class="d-block"><em>Created: <%=moment(artgallery.created).fromNow()%></em></span>
-					<%if(artgallery.created.toString() === artgallery.modified.toString()){%>
-						<span class="d-block"><em>Last Modified: <%=moment(artgallery.modified).fromNow()%></em></span>
+					<small class="d-block"><em>Created: <%=moment(artgallery.created).fromNow()%></em></small>
+					<%if(artgallery.created.toString() !== artgallery.modified.toString()){%>
+						<small class="d-block"><em>Last Modified: <%=moment(artgallery.modified).fromNow()%></em></small>
 					<%}%>
 				</div>
-				<div>
+				<div class="my-2">
 					<span>Status: </span>
 					<span><strong><%=artgallery.status.desc%></strong></span>
 				</div>
-				<div class="d-flex">
+				<div class="d-flex my-2">
 					<div class="">
 						<%if(currentUser && artgallery.author.id.equals(currentUser._id)){%>
 							<a class="btn btn-warning btn-md" href="/artgallery/<%=artgallery._id%>/edit">Edit</a>
@@ -34,9 +36,8 @@
 			</div>
 		</div>
 	</div>
-</div>
-<!-- Comments -->
-	<div class="container">
+	<!-- Comments -->
+	<div class="col-md-12">
 		<div class="d-flex">
 			<h4>Comments</h4>
 			<div class="ml-auto">
@@ -49,25 +50,28 @@
 				<div class=row>
 					<div class="col-md-12">
 						<strong><%=comment.author.username%></strong>
-						<span class="float-right" style="font-size: 95%">
+						<p>
+							<%=comment.text%> 
+						</p>
+						<small class="text-left d-block">
 							<%if(comment.created.toString() === comment.modified.toString()){%>
 								<em>Created: <%=moment(comment.created).fromNow()%></em>
 							<%} else {%>
 								<em>Modified: <%=moment(comment.modified).fromNow()%></em>
 							<%}%>
-						</span>
-						<p>
-							<%=comment.text%> 
-						</p>
-						<%if(currentUser && comment.author.id.equals(currentUser._id)){%>
-							<a class="btn btn-warning btn-sm" href="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>/edit">Edit</a>
-							<form class="form-inline"action="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
-								<button class="btn btn-danger btn-sm">Delete</button>
-							</form>
-						<%}%>
+						</small>
+						<div class="my-2">
+							<%if(currentUser && comment.author.id.equals(currentUser._id)){%>
+								<a class="btn btn-warning btn-sm" href="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>/edit">Edit</a>
+								<form class="form-inline"action="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
+									<button class="btn btn-danger btn-sm">Delete</button>
+								</form>
+							<%}%>
+						</div>
 					</div>
 				</div>	
 			<%})%>
 		</div>
 	</div>
+</div>
 <%-include("../partials/footer")%>
