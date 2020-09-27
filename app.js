@@ -1,5 +1,7 @@
 // modules
 const	express 	= require('express'),
+		compression = require('compression'),
+		cache		= require('cache-control'),
 		mongoose 	= require('mongoose'),
 		axios 		= require('axios'),
 		bodyParser 	= require('body-parser'),
@@ -41,18 +43,28 @@ const store = new MongoDBStore({
 	collection: 'mySessions'
 });
 
+app.use(cache({
+	'/**' : 1000*60*60*24*7*12 //1year
+}));
+
 // passport-configuration
-app.use(require('express-session')({
+app.use(session({
 	secret: 'a picture is worth a thousand words',
 	cookie : {
-		maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+		secure: true,
+		httpOnly: true,
+		domain: 'localhost',
+		maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
 	},
 	store: store, // use mongodbstrore
 	resave: false,
 	saveUninitialized: false
 }));
 
-
+// user compression
+app.use(compression({
+	level: 9
+}));
 
 // express config to view ejs
 app.set('view engine', 'ejs');
@@ -88,6 +100,7 @@ app.use((req,res,next)=>{
 	res.locals.msg_success 	= req.flash('success');
 	next();
 });
+
 
 
  // Routes

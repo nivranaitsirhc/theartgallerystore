@@ -1,6 +1,9 @@
+html {
+  font-family: Raleway;
+}
+
 /*Body*/
 body {
-  font-family: Raleway;
   color: rgb(254, 253, 253);
   background-color: rgb(20, 20, 20);
 }

@@ -5,6 +5,7 @@ const	Artgallery 	= require('../models/artgallery'),
 
 const middlewareObj = {};
 
+
 middlewareObj.parseReturnUrl = function(req, res,next){
 	console.log('middleware - parseReturnUrl');
 	if(!req.session.returnTo) {
