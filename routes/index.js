@@ -27,10 +27,17 @@ router.post("/signup", (req, res)=>{
             console.log(err);
             return res.render("auth/signup", {msg_error: err.message});
         }
-        passport.authenticate("local")(req, res, ()=>{
-           req.flash("success", "Successfully Signed Up! Nice to meet you " + req.body.username);
-           res.redirect(req.session.returnTo);
-           delete req.session.returnTo;
+        Role.create({user:user._id})
+        .then(newRole=>{
+          console.log(newRole)
+          passport.authenticate("local")(req, res, ()=>{
+            req.flash("success", "Successfully Signed Up! Nice to meet you " + req.body.username);
+            res.redirect(req.session.returnTo);
+            delete req.session.returnTo;
+          });
+        })
+        .catch(err=>{
+          console.log(err)
         });
     });
 });
