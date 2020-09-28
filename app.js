@@ -44,16 +44,12 @@ const store = new MongoDBStore({
 	collection: 'mySessions'
 });
 
-let oneWeek=1000*60*60*24*7,
-	oneMonth=1000*60*60*24*30,
-	oneYear=1000*60*60*24*360;
+
 app.use(cache({
-	'/assets/css/**' : oneYear,
-	'/assets/js/**' : oneYear,
-	'/assets/bootstrap/**' : oneYear,
-	'/assets/fonts/**': oneYear,
-	'/assets/fork-awesome/**':oneYear,
-	'/**' : oneWeek
+	'/assets/css/**' : 'public,no-cache,max-age=0,must-revalidate',
+	'/assets/js/**' : 'public,no-cache,max-age=0',
+	'/assets/static/**' : 'public,max-age=604800, immutable',
+	'/**' : 'public,no-cache,max-age=856800,must-revalidate'
 }));
 
 // passport-configuration
@@ -63,7 +59,7 @@ app.use(session({
 		secure: true,
 		httpOnly: true,
 		domain: 'localhost',
-		maxAge: oneWeek, // 1 week
+		maxAge: 856800, // 1 week
 	},
 	store: store, // use mongodbstrore
 	resave: false,

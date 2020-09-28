@@ -7,28 +7,27 @@
 	<!-- bootstrap required meta-tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="dns-prefetch" href="https://cdn.pixabay.com">
 	<!-- bootstrap css -->
-	<link rel="stylesheet" type="text/css" href="/assets/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/static/bootstrap/4.5.2/css/bootstrap.min.css">
 	<!-- fork-awesome -->
-	<link rel="stylesheet" type="text/css" href="/assets/fork-awesome/1.1.7/css/fork-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/static/fork-awesome/1.1.7/css/fork-awesome.min.css">
 	<!-- Raleway font -->
-	<link rel="stylesheet" type="text/css" href="/assets/fonts/raleway/Raleway.css">
+	<link rel="stylesheet" type="text/css" href="/assets/static/fonts/raleway/Raleway.css">
 	<!-- Custom Stylesheet -->
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-	<%if(typeof page !== 'undefined'){%>
-		<%if(page === 'signup' || page === 'login'){%>
-			<!-- Auth Style -->
-			<link rel="stylesheet" type="text/css" href="/assets/css/auth.css">
-		<%}%>
-		<%if(page === 'landing'){%>
-			<!-- Landing Style -->
-			<link rel="stylesheet" type="text/css" href="/assets/css/landing.css">
-			<!-- Landing Js -->
-			<script type="text/javascript" src="/assets/js/libs/modernizr/2.8.3-modernizr.min.js" async></script>
-		<%}%>
-	<%}%>
-	<link rel="icon" type="img/gif" href="/assets/favicon.ico">
+<%if(typeof page !== 'undefined'){%>
+<%if(page === 'signup' || page === 'login'){%>
+	<!-- Auth Style -->
+	<link rel="stylesheet" type="text/css" href="/assets/css/auth.css">
+<%}%>
+<%if(page === 'landing'){%>
+	<!-- Landing Style -->
+	<link rel="stylesheet" type="text/css" href="/assets/css/landing.css">
+	<!-- Landing Js -->
+	<script type="text/javascript" src="/assets/static/modernizr/2.8.3-modernizr.min.js" async></script>
+<%}%>
+<%}%>
+	<link rel="icon" type="img/gif" href="/assets/static/favicon.ico">
 	<title>The Art Store Gallery</title>
 </head>
 <body>
@@ -38,7 +37,6 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<a class="navbar-brand" href="/"><i class="fa fa-artstation" aria-hidden="true"></i> The Art Store Gallery</a>
-
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>">
