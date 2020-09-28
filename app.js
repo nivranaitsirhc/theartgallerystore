@@ -44,10 +44,10 @@ const store = new MongoDBStore({
 	collection: 'mySessions'
 });
 
-
+// Cache Control
 app.use(cache({
 	'/assets/css/**' : 'public,no-cache,max-age=0,must-revalidate',
-	'/assets/js/**' : 'public,no-cache,max-age=0',
+	'/assets/js/**' : 'public,no-cache,max-age=0,must-revalidate',
 	'/assets/static/**' : 'public,max-age=604800, immutable',
 	'/**' : 'public,no-cache,max-age=856800,must-revalidate'
 }));
