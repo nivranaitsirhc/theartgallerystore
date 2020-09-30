@@ -10,6 +10,7 @@
   "author": "Christian Arvin C. Cabo",
   "license": "ISC",
   "dependencies": {
+    "async": "^3.2.0",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
     "cache-control": "^2.0.0",
@@ -22,6 +23,7 @@
     "method-override": "^3.0.0",
     "moment": "^2.28.0",
     "mongoose": "^5.10.6",
+    "nodemailer": "^6.4.11",
     "parse-url": "^5.0.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",

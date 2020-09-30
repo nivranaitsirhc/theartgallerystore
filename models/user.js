@@ -7,13 +7,28 @@ let userSchema = new mongoose.Schema({
 	firstName: String,
 	middleName: String,
 	lastName: String,
-	dateOfBirth: String,
-	email: String,
+	dateOfBirth: Date,
+	email: {							// required by password reset
+		type: String,
+		unique: true,
+		required: true
+	},
+	resetPasswordToken: String,				//required by password reset
+	resetPasswordExpires: Date, 		//required by password reset
 	avatarUrl: String,
 	role: {
-		name: String,
-		value: Number,
-		isAdmin: Boolean
+		name: {
+			type: String,
+			default: 'member'
+		},
+		value: {
+			type: Number,
+			default: 1000				// default number for member
+		},
+		isAdmin: {
+			type: Boolean,
+			default: false
+		}
 	}
 },{
 	timestamps: {
