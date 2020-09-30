@@ -23,6 +23,7 @@ router.get("/signup", (req, res)=>{
 router.post("/signup", (req, res)=>{
   req.body.password = req.body.newUser.password
   req.body.username = req.body.newUser.username
+  req.body.newUser.fullName  = req.body.newUser.firstName + ' ' + req.body.newUser.middleName + ' ' + req.body.newUser.lastName;
   User.register(new User(req.body.newUser), req.body.password, (err, user)=>{
     console.log(user)
     if(err){
@@ -52,7 +53,6 @@ router.post("/login",passport.authenticate("local",
     ), (req, res)=>{
     req.flash('success', 'Welcome back ' + req.body.username);
     res.redirect('/artgallery');
-    delete req.session.returnTo;
 });
 
 // logout route

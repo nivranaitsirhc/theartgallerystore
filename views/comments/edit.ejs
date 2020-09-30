@@ -7,14 +7,14 @@
 		<form class="form-style" action="/artgallery/<%=artgallery_id%>/comments/<%=comment._id%>?_method=PUT" method="POST">
 			<div class="form-group">
 				<label for="commentTitle">Title</label>
-				<input id="commentTitle" class="form-control" type="text" name="comment[title]" required placeholder="place your title here.." value="<%=comment.title%>" style="font-weight: bold">
+				<input id="commentTitle" class="form-control" type="text" name="comment[title]" required placeholder="Comment Title.." value="<%=comment.title%>" style="font-weight: bold">
 			</div>
 			<div class="form-group">
 				<label for="commentBody">Message</label>
 				<textarea id="commentBody" class="form-control fixed" rows="5" name="comment[text]" placeholder="Write your comment here..." spellcheck="true" autofocus="true"><%=comment.text%></textarea>
 			</div>
 			<div class="form-group">
-				<input class="form-control text-center" type="text" value="<%=comment.author.username%>" readonly>
+				<input class="form-control text-center" type="text" value="<%=comment.author.fullName%>" readonly>
 			</div>
 			<div class="form-group">
 				<button class="btn btn-warning btn-lg btn-block">Update</button>

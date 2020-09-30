@@ -19,7 +19,8 @@ const	User 		= require('./models/user'),
 		Comment 	= require('./models/comment');
 
 // routes
-const 	artgalleryRoutes	= require('./routes/artgallery'),
+const 	accountRoutes 		= require('./routes/accounts'),
+		artgalleryRoutes	= require('./routes/artgallery'),
 		commentsRoutes 		= require('./routes/comments'),
 		indexRoutes			= require('./routes/index');
 
@@ -88,11 +89,11 @@ let sessionConfig = {
 	resave: false,
 	saveUninitialized: false
 };
-if(app.get('env') === 'production'){
-	sessionConfig.cookie.secure = true
-	app.set('trust proxy', 1) // trust first proxy
-	console.log('running in poduction..')
-}
+// if(app.get('env') === 'production'){
+// 	sessionConfig.cookie.secure = true
+// 	app.set('trust proxy', 1) // trust first proxy
+// 	console.log('running in poduction..')
+// }
 app.use(session(sessionConfig));
 
 // express passport-configuration
@@ -102,12 +103,6 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-//
-User.remove({})
-.catch(err=>{
-	console.log(err);
-})
 
 // meddleware to make available of our currentUser in all routes. used in header.ejs
 app.use((req,res,next)=>{
@@ -120,6 +115,7 @@ app.use((req,res,next)=>{
 app.use('/',indexRoutes);
 app.use('/artgallery',artgalleryRoutes);
 app.use('/artgallery/:id/comments',commentsRoutes);
+app.use('/user',accountRoutes);
 
 
 // express listen

@@ -3,6 +3,7 @@ const		mongoose 	= require('mongoose'),
 
 
 let userSchema = new mongoose.Schema({
+	fullName: String,
 	firstName: String,
 	middleName: String,
 	lastName: String,
@@ -11,7 +12,8 @@ let userSchema = new mongoose.Schema({
 	avatarUrl: String,
 	role: {
 		name: String,
-		value: Number
+		value: Number,
+		isAdmin: Boolean
 	}
 },{
 	timestamps: {

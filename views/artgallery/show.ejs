@@ -11,7 +11,7 @@
 					<h4 class="float-right">&#8369; <%=artgallery.price%></h4>
 				<%}%>
 				<div>
-					<em>Submitted by: <strong><%=artgallery.author.username%></strong></em>
+					<em>Submitted by: <a href="/user/<%=artgallery.author.id%>"><strong><%=artgallery.author.fullName%></a></strong></em>
 					<small class="d-block"><em>Created: <%=moment(artgallery.created).fromNow()%></em></small>
 					<%if(artgallery.created.toString() !== artgallery.modified.toString()){%>
 						<small class="d-block"><em>Last Modified: <%=moment(artgallery.modified).fromNow()%></em></small>
@@ -21,17 +21,16 @@
 					<span>Status: </span>
 					<span><strong><%=artgallery.status.desc%></strong></span>
 				</div>
-				<div class="d-flex my-2">
+			<%if(currentUser && artgallery.author.id.equals(currentUser._id)){%>
+				<div class="d-flex align-top my-2">
 					<div class="">
-						<%if(currentUser && artgallery.author.id.equals(currentUser._id)){%>
-							<a class="btn btn-warning btn-md" href="/artgallery/<%=artgallery._id%>/edit">Edit</a>
-							<form class="form-inline"action="/artgallery/<%=artgallery._id%>?_method=DELETE" method="POST">
-								<button class="btn btn-danger btn-md">Delete</button>
-							</form>
-						<%}%>
+						<a class="btn btn-warning btn-md" href="/artgallery/<%=artgallery._id%>/edit">Edit</a>
+						<form class="form-inline"action="/artgallery/<%=artgallery._id%>?_method=DELETE" method="POST">
+							<button class="btn btn-danger btn-md">Delete</button>
+						</form>
 					</div>
 				</div>
-				
+			<%}%>
 			</div>
 		</div>
 	</div>
@@ -46,10 +45,10 @@
 		<hr class="my-3">
 		<div class="container">	
 			<% artgallery.comments.forEach((comment)=>{%>
-				<div class=row>
-					<div class="col-md-12 commentBox mb-2">
+				<div class="row commentBox mb-2">
+					<div class="col-lg-10 ">
 						<h6><strong><%=comment.title%></strong></h6>
-						<h7>-<em><%=comment.author.username%></em></strong></h7>
+						<h7><strong><em>by: <a href="/user/<%=comment.author.id%>"><%=comment.author.fullName%></a></em></strong></h7>
 						<p>
 							<%=comment.text%> 
 						</p>
@@ -60,14 +59,18 @@
 								<em>Modified: <%=moment(comment.modified).fromNow()%></em>
 							<%}%>
 						</small>
-						<div class="my-2 float-right">
-							<%if(currentUser && comment.author.id.equals(currentUser._id)){%>
-								<a class="btn btn-warning btn-sm" href="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>/edit">Edit</a>
-								<form class="form-inline"action="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
-									<button class="btn btn-danger btn-sm">Delete</button>
-								</form>
-							<%}%>
+					</div>
+					<div class="col-lg-2 text-right my-2">
+					<%if(currentUser && comment.author.id.equals(currentUser._id)){%>
+						<div class="d-inline">
+							<a class="btn btn-warning btn-sm" href="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>/edit">Edit</a>
 						</div>
+						<div class="d-inline">
+							<form class="form-inline"action="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
+								<button class="btn btn-danger btn-sm">Delete</button>
+							</form>
+						</div>
+					<%}%>
 					</div>
 				</div>	
 			<%})%>

@@ -13,12 +13,26 @@ const 	artGalleryStatusList = require('../utils/artGalleryStatusList');
 // index -- Display a list of artgallerys
 router.get('/', (req,res)=>{
 	// get akk artgallerys from DB
-	Artgallery.find().then((allartgallery)=>{
-		res.render("artgallery/index",{artgallery:allartgallery,page:'artgallery'});
-	}).catch(err=>{
-		req.flash('error',err.message)
-		console.log(err);
-	});
+	if(req.query.search){
+		const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+		Artgallery.find({"title":regex}).sort('-modified').then((allartgallery)=>{
+			let queryMatch = ""
+			if(allartgallery.length < 1){
+				queryMatch = req.query.search;
+			}
+			res.render("artgallery/index",{artgallery:allartgallery,page:'artgallery',emptyQueryMsg:queryMatch});
+		}).catch(err=>{
+			req.flash('error',err.message)
+			console.log(err);
+		});
+	} else {
+		Artgallery.find().sort('-modified').then((allartgallery)=>{
+			res.render("artgallery/index",{artgallery:allartgallery,page:'artgallery'});
+		}).catch(err=>{
+			req.flash('error',err.message)
+			console.log(err);
+		});
+	}
 });
 
 // new -- Display a form to add new artgallerys
@@ -35,11 +49,11 @@ router.post('/', middleware.isLoggedIn,(req,res)=>{
 		desc = req.body.description,
 		author = {
 			id: req.user._id,
-			username: req.user.username
+			username: req.user.username,
+			fullName: req.user.fullName
 		};
 	let newartgallery = {title:title,price:price,image:image,status:status,description:desc, author:author};
 	// create new artgallery and save to DB
-	console.log(newartgallery)
 	Artgallery.create(newartgallery).then((newlyCreated)=> {
 		req.flash('success','Added '+newlyCreated.title);
 		res.redirect('/artgallery/'+newlyCreated._id);
@@ -56,6 +70,7 @@ router.post('/', middleware.isLoggedIn,(req,res)=>{
 // show -- Show more info about artgallery
 router.get('/:id',(req, res)=>{
 	// Show artgallery by id
+	console.log(req.user)
 	Artgallery.findById(req.params.id).populate("comments").then((foundartgallery)=>{
 		res.render('artgallery/show',{artgallery:foundartgallery});
 	}).catch((err)=>{
@@ -106,5 +121,10 @@ router.delete('/:id',middleware.checkArtgalleryOwnership,(req,res)=>{
 		res.redirect('/artgallery')
 	});
 });
+
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;
