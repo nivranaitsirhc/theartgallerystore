@@ -7,12 +7,16 @@ let userSchema = new mongoose.Schema({
 	middleName: String,
 	lastName: String,
 	dateOfBirth: String,
-	username: String,
-	password: String
+	email: String,
+	avatarUrl: String,
+	role: {
+		name: String,
+		value: Number
+	}
 },{
 	timestamps: {
 		createdAt: 'created',
-		modifiedAt: 'modified'
+		updatedAt: 'modified'
 	}
 });
 

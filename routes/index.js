@@ -15,35 +15,30 @@ router.get("/", (req, res)=>{
 });
 
 // show register form
-router.get("/signup",middleware.parseReturnUrl, (req, res)=>{
+router.get("/signup", (req, res)=>{
     res.render("auth/signup",{page:'signup'});
 });
 
 //handle sign up logic
 router.post("/signup", (req, res)=>{
-    let newUser = new User({username: req.body.username});
-    User.register(newUser, req.body.password, (err, user)=>{
-        if(err){
-            console.log(err);
-            return res.render("auth/signup", {msg_error: err.message});
-        }
-        Role.create({user:user._id})
-        .then(newRole=>{
-          console.log(newRole)
-          passport.authenticate("local")(req, res, ()=>{
-            req.flash("success", "Successfully Signed Up! Nice to meet you " + req.body.username);
-            res.redirect(req.session.returnTo);
-            delete req.session.returnTo;
-          });
-        })
-        .catch(err=>{
-          console.log(err)
-        });
-    });
+  req.body.password = req.body.newUser.password
+  req.body.username = req.body.newUser.username
+  User.register(new User(req.body.newUser), req.body.password, (err, user)=>{
+    console.log(user)
+    if(err){
+        console.log(err);
+        return res.render("auth/signup",{page:'signup',msg_error:err.message});
+    } else {
+      passport.authenticate("local")(req,res,()=>{
+        req.flash("success", "Successfully Signed Up! Nice to meet you " + req.body.newUser.firstName);
+        res.redirect('/artgallery');
+      });
+    };
+  });
 });
 
 //show login form
-router.get("/login",middleware.parseReturnUrl, (req, res)=>{
+router.get("/login", (req, res)=>{
   res.render("auth/login",{page: 'login'});
 });
 
@@ -55,14 +50,9 @@ router.post("/login",passport.authenticate("local",
         failureFlash: true
     }
     ), (req, res)=>{
-    console.log('our baseUrl', req.baseUrl);
-    console.log('our originalUrl ',req.originalUrl);
-    console.log('our returnTo',req.session.returnTo)
     req.flash('success', 'Welcome back ' + req.body.username);
-    res.redirect(req.session.returnTo);
-    console.log('deleting returnTo',req.session.returnTo);
+    res.redirect('/artgallery');
     delete req.session.returnTo;
-    console.log('current returnTo',req.session.returnTo)
 });
 
 // logout route
