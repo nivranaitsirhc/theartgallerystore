@@ -27,6 +27,8 @@ const 	accountRoutes 		= require('./routes/accounts'),
 // middlewares
 const 	middleware 	= require('./middleware');
 
+
+
 // express 
 const app = express();
 // express config to view ejs
@@ -76,12 +78,8 @@ app.use(cache({
 	'/**' : 'public,no-cache,max-age=856800,must-revalidate'
 }));
 
-
-// user compression
-app.use(compression({
-	level: 9
-}));
-
+// use compression
+app.use(compression({level: 9}));
 
 // session-configuration
 let sessionConfig = {
@@ -119,6 +117,7 @@ app.use((req,res,next)=>{
 	res.locals.msg_success 	= req.flash('success');
 	next();
 });
+
  // Routes
 app.use('/',indexRoutes);
 app.use('/artgallery',artgalleryRoutes);
@@ -127,7 +126,7 @@ app.use('/user',accountRoutes);
 
 // PAGE NOT FOUND 404
 app.get('*',(req,res)=>{
-	req.flash('error', 'Page not found...\n\"'+req.originalUrl+'\"');
+	req.flash('error', `Page not found...\n\"${req.originalUrl}\"`);
 	res.redirect('/artgallery');
 });
 

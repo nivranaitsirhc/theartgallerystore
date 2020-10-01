@@ -11,18 +11,6 @@ const 	router		 = express.Router(),
 //middleware
 const   middleware = require('../middleware');
 
-//mail transport config
-let smtpTransport = nodemailer.createTransport({
-  service: 'Gmail',
-  auth: {
-    type:         'OAuth2',
-    user:         process.env.NODE_MAILER_user,
-    clientSecret: process.env.NODE_MAILER_clientSecret,
-    clientId:     process.env.NODE_MAILER_clientId,
-    refreshToken: process.env.NODE_MAILER_refreshToken,
-    accessToken:  process.env.NODE_MAILER_accessToken
-  }
-});
 
 //root route
 router.get("/", (req, res)=>{
@@ -47,6 +35,7 @@ router.post("/signup", async (req, res)=>{
     });
   }
   catch(err){
+    console.log(err);
     req.flash('error',err.message);
     res.redirect('back');
   }
@@ -104,14 +93,6 @@ router.post("/forgot",async (req,res)=>{
             `Warm Regards,\n\n\n`+
             `The Art Store Gallery Team`
     };
-    await smtpTransport.set('oauth2_provision_cb', (user, renew, callback)=>{
-      let accessToken = userTokens[user];
-        if(!accessToken){
-          return callback(new Error('Unknown user'));
-        }else{
-          return callback(null, accessToken);
-      }
-    });
     await smtpTransport.sendMail(mailOptions)
     .then(()=>{
       req.flash('success',`An e-mail has been sent to ${user.email}. Please follow the instructions on the email you receive.`);
@@ -119,6 +100,7 @@ router.post("/forgot",async (req,res)=>{
     })
   }
   catch(err){
+    console.log(err);
     req.flash('error',err.message);
     res.redirect('back');
   }
@@ -151,34 +133,39 @@ router.post('/reset/:token', async (req,res)=>{
     user.setPasswordToken = undefined;
     user.setPasswordTokenExpires = undefined;
     await user.save();
-    req.logIn(user,()=>{
-      req.flash('success','You have successfully change your password..')
-      let mailOptions = {
-        to: user.email,
-        from: process.env.NODE_MAILER_user,
-        subject: 'The Art Store Gallery - Password Reset',
-        text: `Hi ${user.firstName},\n\n`+
-              'Congratulations! You have sucessfully reset your password\n\n'+
-              'Warm Regards,\n\n'+
-              'The Art Store Gallery Team'
-      };
-      smtpTransport.set('oauth2_provision_cb', (user, renew, callback)=>{
-        let accessToken = userTokens[user];
-        if(!accessToken){
-          return callback(new Error('Unknown user'));
-        }else{
-          return callback(null, accessToken);
-        }
-      });
-      smtpTransport.sendMail(mailOptions)
-      .then(()=>{
-        res.redirect('/artgallery');
-      });
-    });
+    req.logIn(user,()=>{})
+    req.flash('success','You have successfully change your password..')
+    let mailOptions = {
+      to: user.email,
+      from: process.env.NODE_MAILER_user,
+      subject: 'The Art Store Gallery - Password Reset',
+      text: `Hi ${user.firstName},\n\n`+
+            'Congratulations! You have sucessfully reset your password\n\n'+
+            'Warm Regards,\n\n'+
+            'The Art Store Gallery Team'
+    };
+    smtpTransport.sendMail(mailOptions)
+    res.redirect('/artgallery');
   }
   catch(err){
+    console.log(err);
     req.flash('error',err.message);
     res.redirect('back');
+  }
+});
+
+
+
+//mail transport config
+let smtpTransport = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    type:         'OAuth2',
+    user:         process.env.NODE_MAILER_user,
+    clientSecret: process.env.NODE_MAILER_clientSecret,
+    clientId:     process.env.NODE_MAILER_clientId,
+    refreshToken: process.env.NODE_MAILER_refreshToken,
+    accessToken:  process.env.NODE_MAILER_accessToken
   }
 });
 

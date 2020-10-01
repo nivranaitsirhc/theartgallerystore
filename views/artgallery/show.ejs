@@ -6,20 +6,22 @@
 			<div class="card-body">
 				<p class="card-text"><%=artgallery.description%></p>
 
-				<h1 class="card-title"><strong><%=artgallery.name%></h1></strong>
+				<h4 class="card-title"><strong><%=artgallery.title%></h4></strong>
 				<%if(artgallery.price && artgallery.price > 0){%>
 					<h4 class="float-right">&#8369; <%=artgallery.price%></h4>
 				<%}%>
 				<div>
-					<em>Submitted by: <a href="/user/<%=artgallery.author.id%>"><strong><%=artgallery.author.fullName%></a></strong></em>
+					<em><a href="/user/<%=artgallery.author.id%>"><strong><%=artgallery.author.fullName%></a></strong></em>
 					<small class="d-block"><em>Created: <%=moment(artgallery.created).fromNow()%></em></small>
 					<%if(artgallery.created.toString() !== artgallery.modified.toString()){%>
 						<small class="d-block"><em>Last Modified: <%=moment(artgallery.modified).fromNow()%></em></small>
 					<%}%>
 				</div>
-				<div class="my-2">
-					<span>Status: </span>
-					<span><strong><%=artgallery.status.desc%></strong></span>
+				<div class="row my-2 mr-auto" style="width: min-content">
+					<div class="col-md-6">Type:</div>
+					<div class="col-md-6"><strong><%=artgallery.status.desc%></strong></div>
+					<div class="col-md-6">Status:</div>
+					<div class="col-md-6"><strong><%=artgallery.status.desc%></strong></div>
 				</div>
 			<%if(currentUser && artgallery.author.id.equals(currentUser._id)){%>
 				<div class="d-flex align-top my-2">

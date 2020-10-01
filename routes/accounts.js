@@ -15,11 +15,10 @@ const   middleware = require('../middleware');
 router.get('/:id',(req,res)=>{
 	User.findById(req.params.id)
 	.then(foundUser=>{
-		console.log(foundUser);
 		res.render('./account/show',{user:foundUser});
 	})
 	.catch(err=>{
-		console.log(err)
+		console.log(err);
 		req.flash('error',err.message)
 		res.redirect('/artgallery');
 	})
