@@ -42,6 +42,15 @@ app.use(express.static(__dirname+'/public'));
 app.use(flash());
 // express - use method-override
 app.use(methodOverride('_method'));
+//
+app.use(express.json());
+//
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 
 
 // config connect to mongodb 
@@ -81,7 +90,6 @@ let sessionConfig = {
 		path: '/',
 		secure: false,
 		httpOnly: true,
-		domain: 'localhost',
 		maxAge: 856800, // 1 week
 		sameSite: 'strict'
 	},
@@ -117,6 +125,11 @@ app.use('/artgallery',artgalleryRoutes);
 app.use('/artgallery/:id/comments',commentsRoutes);
 app.use('/user',accountRoutes);
 
+// PAGE NOT FOUND 404
+app.get('*',(req,res)=>{
+	req.flash('error', 'Page not found...\n\"'+req.originalUrl+'\"');
+	res.redirect('/artgallery');
+});
 
 // express listen
 let port = process.env.PORT || 3000
