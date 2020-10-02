@@ -5,8 +5,12 @@ let artgallerySchema = new mongoose.Schema({
 		price: String,
 		image: String,
 		status: {
-			value: Number,
-			desc: String
+			index: Number,
+			name: String
+		},
+		artType: {
+			index: Number,
+			name: String
 		},
 		description: String,
 		author: {

@@ -1,26 +1,19 @@
+//Art Status
 module.exports = [
 	{
 		name: 'None',
-		value: 0
-	},
-	{
-		name:'Commisioned',
-		value: 1
+		index: 0
 	},
 	{
 		name:'Sold',
-		value: 2
+		index: 2
 	},
 	{
 		name:'Reserved',
-		value: 3
-	},
-	{
-		name:'Artwork',
-		value: 4
+		index: 3
 	},
 	{
 		name:'Unavailable',
-		value: 5
+		index: 4
 	}
 ]

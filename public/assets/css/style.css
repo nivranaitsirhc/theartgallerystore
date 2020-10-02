@@ -24,7 +24,7 @@ textarea {
 
 
 /*form styling*/
-div#formtemplate {
+div #formtemplate {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -41,6 +41,11 @@ form.form-style {
 
 #card-text-color {
   color:rgb(20, 20, 20);
+}
+
+.wrap-p{
+  word-break: break-all;
+  white-space: normal;"
 }
 
 .jumbotron {
@@ -92,6 +97,9 @@ form.form-style {
 	text-align: center
 }
 
+
+
+/*Footer Styling*/
 .site-footer
 {
   background-color:#26272b;

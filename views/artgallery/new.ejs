@@ -24,11 +24,27 @@
 			<div class="form-group mb-6">
 				<div class="input-group">
 					<div class="input-group-prepend">
-						<label class="input-group-text" for="inputGroupSelect01">Status</label>
+						<label class="input-group-text" style="width: 90px;" for="artType">Art Type</label>
 					</div>
-					<select required name="status" class="custom-select" id="inputGroupSelect">
+					<select required name="artType" class="custom-select" id="artType">
+						<%artType.forEach(x =>{%>
+							<option value='{"index":<%=x.index%>,"name":"<%=x.name%>"}'><%=x.name%></option>
+						<%})%>
+					</select>
+				</div>
+			</div>
+			<div class="form-group" id="artTypeOthers-Container" style="display:none;">
+				<label for="artTypeOthers">Art Type Others</label>
+				<input class="form-control" type="text" name="artTypeOthers" id="artTypeOthers" placeholder="Define your artwork..">
+			</div>
+			<div class="form-group mb-6">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<label class="input-group-text" style="width: 90px" for="status">Status</label>
+					</div>
+					<select required name="status" class="custom-select" id="status">
 						<%statusList.forEach(x =>{%>
-							<option value='{"value":<%=x.value%>,"desc":"<%=x.name%>"}'><%=x.name%></option>
+							<option value='{"index":<%=x.index%>,"name":"<%=x.name%>"}'><%=x.name%></option>
 						<%})%>
 					</select>
 				</div>
@@ -43,4 +59,23 @@
 			<a class="d-block " href="/artgallery">Go Back</a>
 		</form>
 	</div>
+	<script type="text/javascript">
+		let artTypeNameTemp = '';
+		let artTypeOthers = document.querySelector('#artTypeOthers-Container');
+		let artTypeOthersName = document.querySelector('#artTypeOthers');
+		document.querySelector('#artType').addEventListener('change',e=>{
+			if(JSON.parse(e.target.value).index === 3){
+				artTypeOthers.style = 'display:block';
+				artTypeOthersName.required = true;
+				artTypeOthersName.value = artTypeNameTemp;
+			} else {
+				artTypeOthers.style = 'display:none;';
+				artTypeOthersName.required = false;
+				artTypeOthersName.value = '';
+			}
+		});
+		artTypeOthersName.addEventListener('change',e=>{
+			artTypeNameTemp = e.target.value;
+		});
+	</script>
 <%-include("../partials/footer")%>

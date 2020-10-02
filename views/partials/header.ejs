@@ -8,25 +8,30 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- bootstrap css -->
-	<link rel="stylesheet" type="text/css" href="/assets/static/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link  rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" href="/assets/static/bootstrap/4.5.2/css/bootstrap.min.css">
 	<!-- fork-awesome -->
-	<link rel="stylesheet" type="text/css" href="/assets/static/fork-awesome/1.1.7/css/fork-awesome.min.css">
+	<link rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" href="/assets/static/fork-awesome/1.1.7/css/fork-awesome.min.css">
 	<!-- Raleway font -->
-	<link rel="stylesheet" type="text/css" href="/assets/static/fonts/raleway/Raleway.css">
+	<link rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" href="/assets/static/fonts/raleway/Raleway.css">
 	<!-- Custom Stylesheet -->
-	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" href="/assets/css/style.css">
 <%if(typeof page !== 'undefined'){%>
 <%if(page === 'auth'){%>
 	<!-- Auth Style -->
-	<link rel="stylesheet" type="text/css" href="/assets/css/auth.css">
+	<link rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" href="/assets/css/auth.css">
 <%}%>
 <%if(page === 'landing'){%>
 	<!-- Landing Style -->
-	<link rel="stylesheet" type="text/css" href="/assets/css/landing.css">
-	<!-- Landing Js -->
-	<script type="text/javascript" src="/assets/static/modernizr/2.8.3-modernizr.min.js" async></script>
+	<link rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" href="/assets/css/landing.css">
 <%}%>
 <%}%>
+	<!-- bootstrap required javascripts -->
+	<!-- jquery -->
+	<link rel="preload" as="script" type="text/javascript" href="/assets/static/jquery/jquery-3.5.1.min.js">
+	<script type="text/javascript" src="/assets/static/jquery/jquery-3.5.1.min.js"></script>
+	<!-- bootstrap js bundle (with popper included) -->
+	<link rel="preload" as="script" type="text/javascript" href="/assets/static/bootstrap/4.5.2/js/bootstrap.bundle.min.js">
+	<script type="text/javascript" src="/assets/static/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 	<link rel="icon" type="img/gif" href="/assets/static/favicon.ico">
 	<title>The Art Store Gallery</title>
 </head>
@@ -36,7 +41,7 @@
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<a class="navbar-brand" href="/"><i class="fa fa-artstation" aria-hidden="true"></i> The Art Store Gallery</a>
+			<a class="navbar-brand align-self-center" href="/"><i class="fa fa-artstation" aria-hidden="true"></i> The Art Store Gallery</a>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>">

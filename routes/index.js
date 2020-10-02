@@ -55,7 +55,9 @@ router.post("/login",passport.authenticate("local",
     }
     ), (req, res)=>{
     req.flash('success', `Welcome back ${req.body.username}.`);
-    res.redirect('/artgallery');
+    req.session.returnTo = !req.session.returnTo ? '/artgallery' : req.session.returnTo;
+    res.redirect(req.session.returnTo);
+    delete req.session.returnTo;
 });
 
 // logout route
