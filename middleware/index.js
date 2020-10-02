@@ -6,7 +6,7 @@ const	Artgallery 	= require('../models/artgallery'),
 const middlewareObj = {};
 
 
-middlewareObj.isLoggedIn = async (req, res, next){
+middlewareObj.isLoggedIn = async (req, res, next) => {
 	try {
 		if(req.isAuthenticated()) {
 			return next();
