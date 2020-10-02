@@ -31,6 +31,8 @@ const 	middleware 	= require('./middleware');
 
 // express 
 const app = express();
+// use compression
+app.use(compression({level: 9}));
 // express config to view ejs
 app.set('view engine', 'ejs');
 // express - use moment
@@ -77,9 +79,6 @@ app.use(cache({
 	'/assets/static/**' : 'public,max-age=604800, immutable',
 	'/**' : 'public,no-cache,max-age=856800,must-revalidate'
 }));
-
-// use compression
-app.use(compression({level: 9}));
 
 // session-configuration
 let sessionConfig = {
