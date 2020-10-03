@@ -29,60 +29,64 @@
 	<title>The Art Store Gallery</title>
 </head>
 <body>
-	<nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top">
-		<div class="container">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<a class="navbar-brand align-self-center" href="/"><i class="fa fa-artstation" aria-hidden="true"></i> The Art Store Gallery</a>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>">
-						<a class="nav-link" href="/artgallery">Gallery <span class="sr-only">(current)</span></a>
-					</li>
-				</ul>
-				<%if(typeof page !== 'undefined' && page === 'artgallery'){%>
-					<form class="form-inline my-2 my-lg-0" action="/artgallery" method="GET">
-						<input class="form-control mr-md-2 btn-sm" type="search" name="search" placeholder="Search Art Title" aria-label="Search">
-						<button class="btn btn-sm btn-primary my-2 my-sm-0" type="submit">Search</button>
-					</form>
-				<%}%>
-				<ul class="navbar-nav ml-3">
-					<%if(!currentUser){%>
-						<li class="nav-item <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>">
-							<a class="nav-link" href="/login">Login <i class="fa fa-user"></i><span class="sr-only">(current)</span></a>
-						</li>
-						<li class="nav-item <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>">
-							<a class="nav-link" href="/signup">Sign-up <i class="fa fa-user-plus"></i> <span class="sr-only">(current)</span></a>
-						</li>
-					<%} else {%>
-						<li class="nav-item active dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-transform: lowercase"><%=currentUser.firstName%></a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="/user/<%=currentUser.id%>">Profile</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/logout">Logout</a>
-							</div>
-						</li>
-					<%}%>
-				</ul>
-			</div>
-		</div>
-	</nav>
 
-	<!-- flash message.contianer -->
-	<div class="container my-2">
-		<%if(msg_error && msg_error.length > 0 ){%>
-			<div class="alert alert-danger" role="alert">
-				<%=msg_error%>
-			</div>
-		<% } %>
-		
-		<%if(msg_success && msg_success.length > 0 ){%>
-			<div class="alert alert-success" role="alert">
-				<%=msg_success%>
-			</div>
-		<% } %>
+
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top">
+	<div class="container">
+		<a class="navbar-brand" href="/"><i class="fa fa-artstation" aria-hidden="true"></i> The Art Store Gallery</a></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	<ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/artgallery" aria-current="Gallery">Gallery</a>
+		</li>
+	</ul>
+	<div class="mx-auto">
+		<span style="color:red;font-weight: bold;">!WARNING SITE IS UNDER MAINTENANCE!</span>
 	</div>
-	<!-- start.container -->
-	<div class="container mb-5">
+	<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+	<%if(typeof page !== 'undefined' && page === 'artgallery'){%>
+		<form class="d-flex" action="/artgallery" method="GET">
+			<input class="form-control mr-2" name="search" type="search" placeholder="Search Art Title" aria-label="Search Art Title">
+			<button class="btn btn-outline-success" type="submit">Search</button>
+		</form>
+	<%}%>
+	<%if(!currentUser){%>
+		<li class="nav-item">
+			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/login">Login <i class="fa fa-user"></i></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/signup">Sign-up <i class="fa fa-user-plus"></i></a>
+		</li>
+	<%} else {%>
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="text-transform: lowercase"><%=currentUser.firstName%></a>
+			<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<li><a class="dropdown-item" href="/user/<%=currentUser.id%>">Profile</a></li>
+				 <li><hr class="dropdown-divider"></li>
+				<li><a class="dropdown-item" href="/logout">Logout</a></li>
+			</ul>
+		</li>
+	<%}%>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- flash message.contianer -->
+<div class="container my-2">
+	<%if(msg_error && msg_error.length > 0 ){%>
+		<div class="alert alert-danger" role="alert">
+			<%=msg_error%>
+		</div>
+	<% } %>
+	
+	<%if(msg_success && msg_success.length > 0 ){%>
+		<div class="alert alert-success" role="alert">
+			<%=msg_success%>
+		</div>
+	<% } %>
+</div>
+<!-- start.container -->
+<div class="container mb-5">

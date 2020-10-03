@@ -1,31 +1,29 @@
 <%-include("../partials/header" )%>
-	<section class="jumbotron mt-3 text-center text-white" style="">
-		<div class=" header-text">
+	<section class="bg-dark py-5 mt-3 text-center text-white" style="">
+		<div class="header-text">
 			<h1 class="display-5">The Art Store Gallery</h1>
 			<p class="lead">A picture is worth a thousand words...</p>
-			<hr class="mb-3">
+			<hr class="hr-style mb-3">
 			<div class="">
 				<a class="btn btn-primary" href="/artgallery/new" role="button">Add New Art</a>
 			</div>
 		</div>
 	</section>
 	<div class="container" id="card-container">
-		<div class="row">
+		<div class="row pt-3 justify-content-center">
 			<%if(typeof emptyQueryMsg === 'undefined' || emptyQueryMsg === ''){%>
 				<%artgallery.forEach((x)=>{ %>
-					<div class="col-md-6 col-lg-4 mb-3">
-					  	<div class="card" id="card-text-color">
-						  	<img class="card-img-top" src="<%=x.image.thumb_url%>" width="350" height="200" class="" alt="">
-						  	<div class="card-body w-auto">
-								<h5 ><strong><%=x.title %></strong></h5>
-								<p><%=x.description.substring(0,26)%>...</p>
-								<a class="btn btn-primary btn-sm"href="/artgallery/<%=x._id%>" class="">More info</a>
-								<%if(currentUser && x.author.id.equals(currentUser._id)){%>
-									<form class="form-inline"action="/artgallery/<%=x._id%>?_method=DELETE" method="POST">
-										<button class="btn btn-danger btn-sm">Delete</button>
-									</form>
-								<%}%>
-							</div>
+					<div class="col-md-6 col-lg-4 mb-3 px-2 py-2 bg-dark">
+					  	<img class="img-fluid rounded mx-auto d-block" src="<%=x.image.thumb_url%>" width="500" height="500">
+					  	<div class="card-body w-auto">
+							<h5 ><strong><%=x.title %></strong></h5>
+							<p><%=x.description.substring(0,26)%>...</p>
+							<a class="btn btn-primary btn-sm"href="/artgallery/<%=x._id%>" class="">More info</a>
+							<%if(currentUser && x.author.id.equals(currentUser._id)){%>
+								<form class="form-inline"action="/artgallery/<%=x._id%>?_method=DELETE" method="POST">
+									<button class="btn btn-danger btn-sm">Delete</button>
+								</form>
+							<%}%>
 						</div>
 					</div>
 				<% }); %>

@@ -6,7 +6,7 @@ html,body {
   background-position: fixed-center;
 }
 
-hr {
+.hr-style {
     margin: 0 auto;
     margin-top: 40px;
     width: 50%;
