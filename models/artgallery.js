@@ -3,7 +3,12 @@ const mongoose = require('mongoose');
 let artgallerySchema = new mongoose.Schema({
 		title: String,
 		price: String,
-		image: String,
+		image: {
+			public_id: String,
+			signature: String,
+			secure_url: String,
+			thumb_url: String
+		},
 		status: {
 			index: Number,
 			name: String

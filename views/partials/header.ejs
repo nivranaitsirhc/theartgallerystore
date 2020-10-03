@@ -8,7 +8,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- bootstrap css -->
-	<link  rel="stylesheet" type="text/css" href="/assets/static/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
 	<!-- fork-awesome -->
 	<link rel="stylesheet" type="text/css" href="/assets/static/fork-awesome/1.1.7/css/fork-awesome.min.css">
 	<!-- Raleway font -->
@@ -18,18 +18,13 @@
 <%if(typeof page !== 'undefined'){%>
 <%if(page === 'auth'){%>
 	<!-- Auth Style -->
-	<link rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" href="/assets/css/auth.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/auth.css">
 <%}%>
 <%if(page === 'landing'){%>
 	<!-- Landing Style -->
-	<link rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" href="/assets/css/landing.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/landing.css">
 <%}%>
 <%}%>
-	<!-- bootstrap required javascripts -->
-	<!-- jquery -->
-	<script type="text/javascript" src="/assets/static/jquery/jquery-3.5.1.min.js"></script>
-	<!-- bootstrap js bundle (with popper included) -->
-	<script async type="text/javascript" src="/assets/static/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 	<link rel="icon" type="img/gif" href="/assets/static/favicon.ico">
 	<title>The Art Store Gallery</title>
 </head>

@@ -1,5 +1,11 @@
 // modules
-const	express		= require('express');
+const	express		= require('express'),
+		mongoose 	= require('mongoose'),
+		request		= require('request'),
+		cloudinary 	= require('cloudinary').v2,
+		streamifier = require('streamifier'),
+		multer		= require('multer'),
+		moment		= require('moment');
 
 const 	router 		= express.Router(),
 		Artgallery	= require('../models/artgallery');
@@ -9,6 +15,30 @@ const 	middleware 	= require('../middleware');
 
 const 	artGalleryStatusList	= require('../utils/artGalleryStatusList'),
 		artGalleryType			= require('../utils/artGalleryType');
+
+
+let storage = multer.diskStorage({
+	filename: function(req,file,cb){
+		cb(null,`${moment(Date.now()).format('YYYY-MM-DD_HH:MM:SS')}_${file.originalname}`);
+	}
+});
+
+let imageFilter = function(req,file,cb){
+	if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+		return cb(new Error('Only image files are allowed'), false);
+	}
+	cb(null,true);
+}
+
+let upload = multer({storage:storage,fileFilter:imageFilter});
+
+
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_cloudname,
+	api_key: process.env.CLOUDINARY_api_key,
+	api_secret: process.env.CLOUDINARY_api_secret
+});
+
 
 
 // index -- Display a list of artgallerys
@@ -48,33 +78,38 @@ router.get('/new',middleware.isLoggedIn,(req,res)=>{
 });
 
 // create -- Add new  artgallery to DB
-router.post('/', middleware.isLoggedIn, async (req,res)=>{
+router.post('/', middleware.isLoggedIn,upload.single('imageUpload'), async (req,res)=>{
 	try {
-		let title	= req.body.title,
-			price	= req.body.price,
-			image	= req.body.image,
-			artType = JSON.parse(req.body.artType),
-			status 	= JSON.parse(req.body.status),
-			desc 	= req.body.description,
-			author 	= {
+		let uI = await cloudinary.uploader.upload(req.file.path,
+			{
+				use_filename	:true,
+				folder 			: `artgallery/post/${req.user.username}/${req.body.title}`,
+				tags 			: [
+					'post',
+					`${req.user.username}`,
+					`${req.body.title}`
+				],
+				quality : "auto:best"
+			}
+		);
+		uI.thumb_url = await cloudinary.url(uI.public_id,{secure:true,crop:"thumb"});
+		let artType = JSON.parse(req.body.artType);
+		if(artType.index === 3){
+			artType.name = req.body.artTypeOthers;
+		}
+		let newartgallery = {
+			title 		: req.body.title,
+			price 		: req.body.price,
+			image 		: uI,
+			status 		: JSON.parse(req.body.status),
+			artType 	: artType,
+			description : req.body.description,
+			author 		: {
 				id 			: req.user._id,
 				username 	: req.user.username,
 				fullName 	: req.user.fullName
-			};
-		if(artType.index === 3){
-			let artOther = req.body.artTypeOthers
-			artType.name = artOther;
-		}
-		let newartgallery = {
-			title 		: title,
-			price 		: price,
-			image 		: image,
-			status 		: status,
-			artType 	: artType,
-			description : desc,
-			author 		: author
+			}
 		};
-		console.log(newartgallery);
 		let newlyCreated = await Artgallery.create(newartgallery);
 		req.flash('success',`Added ${newlyCreated.title}`);
 		res.redirect(`/artgallery/${newlyCreated._id}`);
@@ -121,27 +156,42 @@ router.get('/:id/edit', middleware.checkArtgalleryOwnership,(req,res)=>{
 });
 
 // // Update -- update artgallery
-router.put('/:id',middleware.checkArtgalleryOwnership, async (req,res)=>{
+router.put('/:id',middleware.checkArtgalleryOwnership,upload.single('imageUpload'), async (req,res)=>{
 	try {
-		let title 	= req.body.title,
-			price 	= req.body.price,
-			image 	= req.body.image,
-			artType = JSON.parse(req.body.artType),
-			status 	= JSON.parse(req.body.status),
-			desc 	= req.body.description;
-		if(artType.index === 3){
-			artType.name = req.body.artTypeOthers ;
+		let foundartgallery = await Artgallery.findById(req.params.id);
+		if(req.file){
+			if(foundartgallery.image.public_id){
+				await cloudinary.uploader.destroy(foundartgallery.image.public_id);
+			}
+			foundartgallery.image = await cloudinary.uploader.upload(req.file.path,
+				{
+					use_filename	:true,
+					folder 			: `artgallery/post/${req.user.username}/${req.body.title}`,
+					tags 			: [
+						'post',
+						`${req.user.username}`,
+						`${req.body.title}`
+					],
+					quality : "auto:best"
+				}
+			);
+			foundartgallery.image.thumb_url = await cloudinary.url(foundartgallery.image.public_id,{secure:true,crop:"thumb"});
 		}
-		let newartgallery = {
-			title 		: title,
-			price 		: price,
-			image 		: image,
-			artType 	: artType,
-			status 		: status,
-			description : desc
-		};
-		let updatedartgallery = await Artgallery.findByIdAndUpdate(req.params.id,newartgallery);
-		req.flash('success', `Updated ${updatedartgallery.title}`);
+
+		let artType = JSON.parse(req.body.artType);
+		if(artType.index === 3){
+			artType.name = req.body.artTypeOthers;
+		}
+		foundartgallery.title 			= req.body.title;
+		foundartgallery.price 			= req.body.price;
+		foundartgallery.status 			= JSON.parse(req.body.status);
+		foundartgallery.artType 		= artType;
+		foundartgallery.description 	= req.body.description;
+		foundartgallery.author.id 		= req.user._id;
+		foundartgallery.author.username = req.user.username;
+		foundartgallery.author.fullName = req.user.fullName;
+		foundartgallery.save();
+		req.flash('success', `Updated ${foundartgallery.title}`);
 		res.redirect(`/artgallery/${req.params.id}`);
 	}
 	catch(err){
@@ -154,8 +204,12 @@ router.put('/:id',middleware.checkArtgalleryOwnership, async (req,res)=>{
 // // destroy -- artgallery
 router.delete('/:id',middleware.checkArtgalleryOwnership, async (req,res)=>{
 	try {
-		let updatedartgallery = await Artgallery.findByIdAndDelete(req.params.id,req.body.artgallery);
-		req.flash('success','You have successfully deleted '+updatedartgallery.title);
+		let deleteartgallery = await Artgallery.findById(req.params.id);
+		if(deleteartgallery.image.public_id) {
+			await cloudinary.uploader.destroy(deleteartgallery.image.public_id);
+		}
+		deleteartgallery.remove();
+		req.flash('success',`You have successfully deleted ${deleteartgallery.title}`);
 		res.redirect('/artgallery');
 	}
 	catch(err){

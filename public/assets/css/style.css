@@ -24,7 +24,7 @@ textarea {
 
 
 /*form styling*/
-div #formtemplate {
+div#formtemplate {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;

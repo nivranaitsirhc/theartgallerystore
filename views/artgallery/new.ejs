@@ -3,7 +3,7 @@
 		<h1 class="mb-3 mt-5">Create new <strong>Art</strong> post%></h1>
 	</div>
 	<div class="container justify-content-center" id="formtemplate">
-		<form class="form-style"action="/artgallery" method="POST">
+		<form class="form-style"action="/artgallery" method="POST" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="name">Title</label>
 				<input id="name" class="form-control" required type="text" name="title" placeholder="Title">
@@ -17,10 +17,21 @@
 					<input id="price" class="form-control" type="number" name="price" placeholder="Price" min="0" step="0.01">
 				</div>
 			</div>
-			<div class="form-group mb-6">
+			<!-- <div class="form-group mb-6">
 				<label for="image">Image url</label>
-				<input id="image" class="form-control" required type="text" name="image" placeholder="http(s)://" title="Please fill-in a valid url" required pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg)|(\/[\w\W]+\.(jpg|png|svg)|[\w]+\/[\w\W]+\.(jpg|png|svg))">
+				<input id="image" class="form-control" required type="text" name="image" placeholder="http(s)://" title="Please fill-in a valid url" pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg)|(\/[\w\W]+\.(jpg|png|svg)|[\w]+\/[\w\W]+\.(jpg|png|svg))">
+			</div> -->
+
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 90px;" id="inputGroupFileAddon01">Upload</span>
+				</div>
+				<div class="custom-file">
+					<input type="file" class="custom-file-input" id="imgUpload" aria-describedby="inputGroupFileAddon01" name="imageUpload">
+					<label class="custom-file-label" for="imgUpload">Choose file</label>
+				</div>
 			</div>
+
 			<div class="form-group mb-6">
 				<div class="input-group">
 					<div class="input-group-prepend">

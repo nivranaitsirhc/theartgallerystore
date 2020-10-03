@@ -15,7 +15,7 @@
 				<%artgallery.forEach((x)=>{ %>
 					<div class="col-md-6 col-lg-4 mb-3">
 					  	<div class="card" id="card-text-color">
-						  	<img class="card-img-top" src="<%=x.image%>" class="" alt="">
+						  	<img class="card-img-top" src="<%=x.image.thumb_url%>" width="350" height="200" class="" alt="">
 						  	<div class="card-body w-auto">
 								<h5 ><strong><%=x.title %></strong></h5>
 								<p><%=x.description.substring(0,26)%>...</p>
