@@ -1,7 +1,7 @@
-# theartgallerystore
-An Art Store Gallery website using node.js
+# theartstoregallery
+An Art Store Gallery web-app using node.js
 
-## This is my production webdevelopment project using Express.js as server framework and Ejs as rendering template.
+## This is my production webdevelopment project using Node.js & Express.js as the server framework and Ejs as rendering template.
 ### features:
 * User Account Authentication,
 * Password-Reset using Email Service,
@@ -34,4 +34,4 @@ An Art Store Gallery website using node.js
 * "passport-local-mongoose": "^6.0.1"
 
 
-Visit the site: https://theartstoregallery.herokuapp.com/artgallery
+Visit the site: https://theartstoregallery.herokuapp.com
