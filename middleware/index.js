@@ -13,7 +13,7 @@ middlewareObj.isLoggedIn = async (req, res, next) => {
 		}
 		req.session.returnTo = req.originalUrl;
 		req.flash('error','You need to be login First!');
-		res.redirect('/login')
+		res.redirect('/signin')
 	}
 	catch(e){
 		console.log(e);

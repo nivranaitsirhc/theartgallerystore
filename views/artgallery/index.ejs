@@ -1,37 +1,45 @@
 <%-include("../partials/header" )%>
-	<section class="bg-dark py-5 mt-3 text-center text-white" style="">
-		<div class="header-text">
+	<header class="bg-dark py-5 px-5 mt-3">
+		<section class="text-center">
 			<h1 class="display-5">The Art Store Gallery</h1>
-			<p class="lead">A picture is worth a thousand words...</p>
-			<hr class="hr-style mb-3">
-			<div class="">
+			<hr>
+			<p>A picture is worth a thousand words...</p>
+		</section>
+		<section class="">
+			<div class="text-right">
 				<a class="btn btn-primary" href="/artgallery/new" role="button">Add New Art</a>
 			</div>
-		</div>
-	</section>
-	<div class="container" id="card-container">
-		<div class="row pt-3 justify-content-center">
-			<%if(typeof emptyQueryMsg === 'undefined' || emptyQueryMsg === ''){%>
-				<%artgallery.forEach((x)=>{ %>
-					<div class="col-md-6 col-lg-4 mb-3 px-2 py-2 bg-dark">
-					  	<img class="img-fluid rounded mx-auto d-block" src="<%=x.image.thumb_url%>" width="500" height="500">
-					  	<div class="card-body w-auto">
-							<h5 ><strong><%=x.title %></strong></h5>
-							<p><%=x.description.substring(0,26)%>...</p>
-							<a class="btn btn-primary btn-sm"href="/artgallery/<%=x._id%>" class="">More info</a>
-							<%if(currentUser && x.author.id.equals(currentUser._id)){%>
-								<form class="form-inline"action="/artgallery/<%=x._id%>?_method=DELETE" method="POST">
-									<button class="btn btn-danger btn-sm">Delete</button>
-								</form>
-							<%}%>
-						</div>
-					</div>
-				<% }); %>
-			<%} else {%>
-				<div class="container">
-					<p class="text-center display-4"><strong>Sorry, We cannot find <em>"<span id="header-text"style="color:red;"><%=emptyQueryMsg%></span>"</em> in our database..</strong></p>
+		</section>
+	</header>
+	<section class="row justify-content-evenly my-3">
+	<%if(typeof emptyQueryMsg === 'undefined' || emptyQueryMsg === ''){%>
+		<%for(let x of artgallery){ %>
+			<article class="col-md-6 col-lg-4 mb-3">
+				<div class="card bg-dark" id="card">
+			  		<section class="card-body">
+			  			<figure>
+					  		<img class="rounded card-img-top" src="<%=x.image.thumb_url%>">
+				  		</figure>
+				  		<header>
+							<h5 class="card-title"><strong><%=x.title %></strong></h5>
+				  		</header>
+			  			<p class="card-text"><%=x.description.substring(0,35)%>...</p>
+					</section>
+			  		<section class="card-body">
+			  			<a class="btn btn-primary btn-sm"href="/artgallery/<%=x._id%>" class="">More info</a>
+		  			<%if(currentUser && x.author.id.equals(currentUser._id)){%>
+						<form class="d-inline"action="/artgallery/<%=x._id%>?_method=DELETE" method="POST">
+							<button class="btn btn-danger btn-sm">Delete</button>
+						</form>
+					<%}%>
+					</section>
 				</div>
-			<%}%>
-		</div>
-	</div	>
+			</article>	
+	<%}%>
+	<%} else {%>
+			<div class="container">
+				<p class="text-center display-4"><strong>Sorry, We cannot find <em>"<span id="header-text"style="color:red;"><%=emptyQueryMsg%></span>"</em> in our database..</strong></p>
+			</div>
+	<%}%>
+	</section>
 <%-include("../partials/footer")%>

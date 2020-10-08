@@ -4,6 +4,7 @@ let artgallerySchema = new mongoose.Schema({
 		title: String,
 		price: String,
 		image: {
+			uploadType: String,
 			public_id: String,
 			signature: String,
 			secure_url: String,

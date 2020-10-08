@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="description" content="A simple fines Art Store Gallery node.js website using express and bootstrap,
+	<meta name="description" content="
+	A simple Art Store Gallery where you can share your creations.
 	Designed & Developed by: Christian Arvin C. Cabo,
 	email: cacc.greenleaflabworks@gmail.com">
 	<!-- bootstrap required meta-tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<%if(typeof page !== 'undefined' && page === 'artgallery'){%>
+	<!-- resolve cloudinary -->
+	<link rel="dns-prefetch" href="https://cloudinary.com">
+<%}%>
 	<!-- bootstrap css -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/assets/static/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
 	<!-- fork-awesome -->
+	<link rel="preload" as="style" type="text/css" href="/assets/static/fork-awesome/1.1.7/css/fork-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/assets/static/fork-awesome/1.1.7/css/fork-awesome.min.css">
 	<!-- Raleway font -->
+	<link rel="preload" as="style" type="text/css" href="/assets/static/fonts/raleway/Raleway.css">
 	<link rel="stylesheet" type="text/css" href="/assets/static/fonts/raleway/Raleway.css">
 	<!-- Custom Stylesheet -->
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
@@ -30,7 +37,7 @@
 </head>
 <body>
 
-
+<!-- navigation bar -->
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top">
 	<div class="container">
 		<a class="navbar-brand" href="/"><i class="fa fa-artstation" aria-hidden="true"></i> The Art Store Gallery</a></a>
@@ -43,9 +50,6 @@
 			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/artgallery" aria-current="Gallery">Gallery</a>
 		</li>
 	</ul>
-	<div class="mx-auto">
-		<span style="color:red;font-weight: bold;">!WARNING SITE IS UNDER MAINTENANCE!</span>
-	</div>
 	<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
 	<%if(typeof page !== 'undefined' && page === 'artgallery'){%>
 		<form class="d-flex" action="/artgallery" method="GET">
@@ -55,7 +59,7 @@
 	<%}%>
 	<%if(!currentUser){%>
 		<li class="nav-item">
-			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/login">Login <i class="fa fa-user"></i></a>
+			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/signin">Sign-in <i class="fa fa-user"></i></a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/signup">Sign-up <i class="fa fa-user-plus"></i></a>
@@ -74,19 +78,16 @@
     </div>
   </div>
 </nav>
+<%if(msg_error.length > 0 || msg_success.length > 0){%>
 <!-- flash message.contianer -->
-<div class="container my-2">
-	<%if(msg_error && msg_error.length > 0 ){%>
-		<div class="alert alert-danger" role="alert">
-			<%=msg_error%>
-		</div>
-	<% } %>
-	
-	<%if(msg_success && msg_success.length > 0 ){%>
-		<div class="alert alert-success" role="alert">
-			<%=msg_success%>
-		</div>
-	<% } %>
+<div class="container text-center my-2">
+	<%if(msg_error.length>0){%>
+	<div class="alert alert-danger"  role="alert"><%=msg_error%></div>
+	<%}%>
+	<%if(msg_success.length>0){%>
+	<div class="alert alert-success" role="alert"><%=msg_success%></div>
+	<%}%>
 </div>
-<!-- start.container -->
-<div class="container mb-5">
+<% } %>
+<!-- start.main -->
+<main class="container overflow-hidden">
