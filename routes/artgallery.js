@@ -113,7 +113,7 @@ router.post('/new', middleware.isLoggedIn,upload.single('imageUpload'), async (r
 					quality : "auto:good"
 				}
 			);
-			newartgallery.image.thumb_url = await cloudinary.url(uI.public_id,{secure:true,crop:'thumb'});
+			newartgallery.image.thumb_url = await cloudinary.url(newartgallery.image.public_id,{secure:true,crop:'thumb'});
 			newartgallery.image.uploadType = 'upload';
 		} else if(req.body.imageType === 'url'){
 			newartgallery.image.uploadType = 'url';
