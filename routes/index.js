@@ -42,15 +42,15 @@ router.post("/signup", async (req, res)=>{
 });
 
 //show login form
-router.get("/login", (req, res)=>{
-  res.render("auth/login",{page: 'auth'});
+router.get("/signin", (req, res)=>{
+  res.render("auth/signin",{page: 'auth'});
 });
 
 //handling login logic
-router.post("/login",passport.authenticate("local", 
+router.post("/signin",passport.authenticate("local", 
     {
         // successRedirect: "/artgallery"
-        failureRedirect: "/login",
+        failureRedirect: "/signin",
         failureFlash: true
     }
     ), (req, res)=>{

@@ -125,8 +125,7 @@ app.use('/user',accountRoutes);
 
 // PAGE NOT FOUND 404
 app.get('*',(req,res)=>{
-	req.flash('error', `Page not found...\n\"${req.originalUrl}\"`);
-	res.redirect('/artgallery');
+	res.render('./404');
 });
 
 // express listen

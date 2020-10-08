@@ -2,32 +2,50 @@
 	<div class="text-center">
 		<h1 class="mb-3 mt-5">Edit <strong><%=artgallery.title%></strong></h1>
 	</div>
-	<div class="container justify-content-center" id="formtemplate">
-		<form class="form-style" action="/artgallery/<%=artgallery.id%>?_method=PUT" method="POST" >
-			<div class="form-group">
-				<label for="name">Title</label>
-				<input id="name" class="form-control" required type="text" name="title" placeholder="Title" value="<%=artgallery.title%>">
+
+	<div class="row justify-content-center mb-5" >
+		<form class="col col-md-10 col-lg-6" action="/artgallery/<%=artgallery.id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+			<div class="mb-3">
+				<label for="title">Title</label>
+				<input class="form-control" id="title" type="text" name="title" value="<%=artgallery.title%>" required autofocus>
 			</div>
-			<div class="form-group">
-				<label for="price">Price</label>
-				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1">&#8369;</span>
+			<div class="mb-3">
+				<label for="image">Artwork</label>
+
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="imageType" value="url" id="imageTypeUrl" onclick="imgUrl()" <%if(artgallery.image.uploadType === 'url'){%>checked<%}%>>
+					<label class="form-check-label" for="imageTypeUrl">Use Url</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="imageType" value="upload" id="imageTypeUpload" onclick="imgUpload()" <%if(artgallery.image.uploadType === 'upload'){%>checked<%}%>>
+					<label class="form-check-label" for="imageTypeUpload" >Upload Image</label>
+				</div>
+				<div id="containerImageUpload">
+					<div class="input-group" >
+						<span class="input-group-text" id="imageUpload">Upload</span>
+						<div class="form-file">
+							<input type="file" class="form-file-input" id="imageUploadInput" aria-describedby="Upload Artwork" required pattern="[\w\W].(jpg|png|svg|gif)" name="imageUpload">
+							<label class="form-file-label" for="imageUploadInput">
+								<span class="form-file-text" id="imgUploadText">Choose file...</span>
+							</label>
+						</div>
 					</div>
-					<input id="price" class="form-control" type="number" name="price" placeholder="Price" min="0" step="0.01" value="<%=artgallery.price%>">
+				</div>
+				<div id="containerImageUrl" style="display: none">
+					<div class="input-group">
+						<label class="input-group-text" for="imageUrlInput">Image url</label>
+						<div class="form-file">
+							<input id="imageUrlInput" class="form-control" type="text" name="imageUrl" placeholder="http(s)://" title="Please fill-in a valid url" pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg|gif)|(\/[\w\W]+\.(jpg|png|svg|gif)|[\w]+\/[\w\W]+\.(jpg|png|svg|gif))" value="<%=artgallery.image.secure_url%>" >
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="form-group mb-3">
-				<label for="image">Image url</label>
-				<input id="image" class="form-control" required type="text" name="image" value="<%=artgallery.image%>" placeholder="http(s)://" title="Please fill-in a valid url" required pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg)|(\/[\w\W]+\.(jpg|png|svg)|[\w]+\/[\w\W]+\.(jpg|png|svg))">
-			</div>
-			
-			<div class="form-group mb-6">
+			<div class="mb-3">
+				<label for="artType">Art Type</label>
 				<div class="input-group">
-					<div class="input-group-prepend">
-						<label class="input-group-text" style="width: 90px;" for="artType">Art Type</label>
-					</div>
-					<select required name="artType" class="custom-select" id="artType">
+					<label class="input-group-text" for="artType">Choose</label>
+					<!-- <input class="form-control" id="artType" type="text" name="artType"> -->
+					<select class="form-select" id="artType" name="artType">
 						<%artType.forEach(x =>{%>
 							<option value='{"index":<%=x.index%>,"name":"<%=x.name%>"}'
 							<%if(artgallery.artType.index == x.index){%>
@@ -37,17 +55,17 @@
 						<%})%>
 					</select>
 				</div>
+				<div class="form-group mt-3" id="artTypeOthers-Container" style="display:<%if(artgallery.artType.index === 3){%>block<%}else{%>none<%}%>;">
+					<label for="artTypeOthers">Others</label>
+					<input class="form-control" type="text" name="artTypeOthers" id="artTypeOthers" placeholder="Define your artwork.." <%if(artgallery.artType.index === 3){%>value="<%=artgallery.artType.name%>"<%}%>>
+				</div>
 			</div>
-			<div class="form-group" id="artTypeOthers-Container" style="display:none;">
-				<label for="artTypeOthers">Art Type Others</label>
-				<input class="form-control" type="text" name="artTypeOthers" id="artTypeOthers" placeholder="Define your artwork..">
-			</div>
-			<div class="form-group mb-6">
+			
+			<div class="mb-3">
+				<label for="status">Status</label>
 				<div class="input-group">
-					<div class="input-group-prepend" style="width: 90px;">
-						<label class="input-group-text" style="width: 90px" for="status">Status</label>
-					</div>
-					<select required name="status" class="custom-select" id="status">
+					<label class="input-group-text" for="status">Choose</label>
+					<select class="form-select" id="status" name="status">
 						<%statusList.forEach(x =>{%>
 							<option value='{"index":<%=x.index%>,"name":"<%=x.name%>"}' <%if(artgallery.status.index == x.index){%>
 									selected
@@ -56,40 +74,20 @@
 					</select>
 				</div>
 			</div>
-
-			<div class="form-group">
+			<div class="mb-3 ">
+				<label>Price</label>
+				<div class="input-group">
+					<label class="input-group-text" for="price">&#8369;</label>
+					<input class="form-control" id="price" type="number" name="price" step="0.5" min="0.00" value="<%=artgallery.price%>">
+				</div>
+			</div>
+			<div class="mb-3">
 				<label for="description">Description</label>
-				<textarea id="description"class="form-control" name="description" placeholder="Description" autofocus="true" rows="3" ><%=artgallery.description%></textarea>
+				<textarea class="form-control" id="description" name="description" placeholder="Description" autofocus="true" rows="3"><%=artgallery.description%></textarea>
 			</div>
-			<div class="form-group">
-				<button class="btn btn-primary btn-lg btn-block">Submit</button>
-			</div>
-			<a class="d-block" href="/artgallery">Go Back</a>
+			<input class="btn btn-primary btn-block" type="submit" value="Submit Artwork">
+			<a class="d-block mt-3" href="/artgallery/<%=artgallery._id%>"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>  Go Back</a>
 		</form>
 	</div>
-	<script type="text/javascript">
-		let artTypeNameTemp = '';
-		let artTypeOthers = document.querySelector('#artTypeOthers-Container');
-		let artTypeOthersName = document.querySelector('#artTypeOthers');
-		document.querySelector('#artType').addEventListener('change',e=>{
-			if(JSON.parse(e.target.value).index === 3){
-				artTypeOthers.style ='display:block';
-				if(!artTypeNameTemp){
-					artTypeOthersName.value = '<%=artgallery.artType.name%>';
-				} else {
-					artTypeOthersName.value = 'artTypeNameTemp';
-				}
-			} else {
-				artTypeOthers.style 	= 'display:none';
-				artTypeOthersName.value = '';
-			}
-		});
-		artTypeOthersName.addEventListener('ValueChange',e=>{
-			artTypeNameTemp = e.target.value;
-		});
-		if(<%=artgallery.artType.index%> === 3){
-			artTypeOthers.style = 'display:block';
-			artTypeOthersName.value = '<%=artgallery.artType.name%>';
-		}
-	</script>
+	<script type="text/javascript" src="/assets/js/new-art.js" <%if(artgallery.image.uploadType === 'upload'){%>onload="imgUpload()"<%} else {%>onload="imgUrl()"<%}%>></script>
 <%-include("../partials/footer")%>

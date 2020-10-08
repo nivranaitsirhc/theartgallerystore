@@ -1,62 +1,90 @@
 <%-include("../partials/header")%>
-<div class="row justify-content-center">
-	<div class="container">
-		<div class="card>">
-			<img src="<%=artgallery.image%>" class="card-img-top" alt="...">
-			<div class="card-body">
-				<p class="card-text"><%=artgallery.description%></p>
 
+<div class="row my-3">
+	<!-- info -->
+	<div class="col-md-2 d-none">
+		<section>
+			info
+		</section>
+	</div>
+	<!-- post -->
+	<div class="col-md-12 order-first-md">
+		<article class="my-2">
+			<figure class="figure">
+				<img src="<%=artgallery.image.secure_url%>" class="img img-fluid">
+			</figure>
+			<header>
+				<p><%=artgallery.description%></p>
 				<h4 class="card-title wrap-p"><strong><%=artgallery.title%></h4></strong>
+			</header>
+			<section class="mt-2">
+				<div class="mb-2">
 				<%if(artgallery.price && artgallery.price > 0){%>
-					<h4 class="float-right">&#8369; <%=artgallery.price%></h4>
+					<h4 class="float-right align-selft-center">&#8369; <%=artgallery.price%></h4>
 				<%}%>
-				<div>
-					<em><a href="/user/<%=artgallery.author.id%>"><strong><%=artgallery.author.fullName%></a></strong></em>
+					<h7><em><a href="/user/<%=artgallery.author.id%>"><strong><%=artgallery.author.fullName%></a></strong></em></h7>
 					<small class="d-block"><em>Created: <%=moment(artgallery.created).fromNow()%></em></small>
-					<%if(artgallery.created.toString() !== artgallery.modified.toString()){%>
-						<small class="d-block"><em>Last Modified: <%=moment(artgallery.modified).fromNow()%></em></small>
-					<%}%>
+				<%if(artgallery.created.toString() !== artgallery.modified.toString()){%>
+					<small class="d-block"><em>Last Modified: <%=moment(artgallery.modified).fromNow()%></em></small>
+				<%}%>
 				</div>
-				<div class="row my-2 mr-auto">
-					<table>
-							<tr>
-								<td>Type:</td>
-								<td><strong><%=artgallery.artType.name%></strong></td>
-							</tr>
-								<td>Status:</td>
-								<td><strong><%=artgallery.status.name%></strong></td>
-							<tr>
-							</tr>
-					</table>
-				</div>
+				
+
+				<table>
+					<tr>
+						<td>Art Type</td>
+						<td>:</td>
+						<td><strong><%=artgallery.artType.name%></td>
+					</tr>
+					<tr>
+						<td>Status</td>
+						<td>:</td>
+						<td><strong><%=artgallery.status.name%></strong></td>
+					</tr>
+				</table>
+				<!-- <div class="d-flex">
+					<div class="float-left pr-2">
+						<label>Art Type :</label><br>
+						<label>Status :</label>
+					</div>
+					<div class="float-left">
+						<strong><%=artgallery.artType.name%></strong>
+						<br>
+						<strong><%=artgallery.status.name%></strong>
+					</div>
+				</div> -->
+			</section>
+			<section class="mt-3 m-auto">
 			<%if(currentUser && artgallery.author.id.equals(currentUser._id)){%>
 				<div class="d-flex align-top my-2">
 					<div class="">
 						<a class="btn btn-warning btn-md" href="/artgallery/<%=artgallery._id%>/edit">Edit</a>
-						<form class="form-inline"action="/artgallery/<%=artgallery._id%>?_method=DELETE" method="POST">
+						<form class="d-inline"action="/artgallery/<%=artgallery._id%>?_method=DELETE" method="POST">
 							<button class="btn btn-danger btn-md">Delete</button>
 						</form>
 					</div>
 				</div>
 			<%}%>
+			</section>
+		</article>
+		<!-- comment -->
+		<section class="my-3">
+			<div class="row">
+				<header class="col-6 text-left">
+					<h4 style="font-size: 2rem">Comments<h4>
+				</header>
+				<section class="col-6 text-right">
+					<form action="/artgallery/<%=artgallery.id%>/comments/new" method="GET">
+						<button class="btn btn-success" >Add Comment</button>
+					</form>
+				</section>
 			</div>
-		</div>
-	</div>
-	<!-- Comments -->
-	<div class="container">
-		<div class="d-flex">
-			<h4>Comments</h4>
-			<div class="ml-auto">
-				<a class="btn btn-success" href="/artgallery/<%=artgallery._id%>/comments/new">Add new comment</a>
-			</div>
-		</div>
-		<hr class="my-3">
-		<div class="container">	
+			<section>
 			<% artgallery.comments.forEach((comment)=>{%>
-				<div class="row commentBox mb-2">
-					<div class="col-lg-10 ">
+				<article class="row commentBox mb-2">
+					<header class="col-lg-10 ">
 						<h6><strong><%=comment.title%></strong></h6>
-						<h7><strong><em>by: <a href="/user/<%=comment.author.id%>"><%=comment.author.fullName%></a></em></strong></h7>
+						<small><strong><a href="/user/<%=comment.author.id%>"><%=comment.author.fullName%></a></strong></small>
 						<p class="wrap-p"><%=comment.text%></p>
 						<small class="text-left d-block">
 							<%if(comment.created.toString() === comment.modified.toString()){%>
@@ -65,22 +93,24 @@
 								<em>Modified: <%=moment(comment.modified).fromNow()%></em>
 							<%}%>
 						</small>
-					</div>
-					<div class="col-lg-2 text-right my-2">
+					</header>
+					<section class="col-lg-2 text-right my-2">
 					<%if(currentUser && comment.author.id.equals(currentUser._id)){%>
 						<div class="d-inline">
 							<a class="btn btn-warning btn-sm" href="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>/edit">Edit</a>
 						</div>
 						<div class="d-inline">
-							<form class="form-inline"action="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
+							<form class="d-inline"action="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
 								<button class="btn btn-danger btn-sm">Delete</button>
 							</form>
 						</div>
 					<%}%>
-					</div>
-				</div>	
+					</section>
+				</article>	
 			<%})%>
-		</div>
+			</section>
+		</section>
 	</div>
 </div>
+
 <%-include("../partials/footer")%>

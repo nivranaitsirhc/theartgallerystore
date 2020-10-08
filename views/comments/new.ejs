@@ -1,20 +1,25 @@
 <%-include("../partials/header")%>
-	<div class="col-md-12 text-center">
+	<div class="text-center">
 		<h1 class="mt-5">"<%=artgallery.title%>"</h1>
 		<h3 class="">Add New Comment</h3>
 	</div>
-	<div class="container justify-content-center" id="fomrtemplate">
+	<div class="mb-4" id="fomrtemplate">
 		<form class="form-style" action="/artgallery/<%=artgallery._id%>/comments" method="POST">
-			<div class="form-group">
+			<div class="form-group mb-3">
 				<label for="commentTitle">Title</label>
 				<input id="commentTitle" class="form-control" type="text" name="comment[title]" required placeholder="Comment Title.." style="font-weight: bold">
 			</div>
-			<div class="form-group">
+			<div class="form-group mb-3">
 				<label for="commentBody">Message</label>
 				<textarea id="commentBody" class="form-control fixed" rows="5" name="comment[text]" placeholder="Write your comment here..." spellcheck="true" autofocus="true"o></textarea>
 			</div>
-			<div class="form-group">
-				<input class="form-control text-center" type="text" value="<%=currentUser.fullName%>" readonly>
+			<div class="form-group mb-3">
+				<label for="inputUser">Author</label>
+			<%if(!currentUser){%>
+				<input class="form-control text-center" type="text" id="inputUser">
+			<%}else{%>
+				<input class="form-control text-center" type="text" id="inputUser" value="<%=currentUser.fullName%>" readonly>
+			<%}%>
 			</div>
 			<div class="form-group">
 				<button class="btn btn-primary btn-lg btn-block">Submit</button>

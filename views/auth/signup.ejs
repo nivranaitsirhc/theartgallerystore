@@ -1,9 +1,10 @@
 <%-include("../partials/header")%>
-<div id="authtemplate" style="height: 130vh">
+<div id="authtemplate">
 	<form class="form-signin" action="/signup" method="POST">
 		<div class="text-center mb-4">
 			<h1 class="h3 mb-3 font-weight-normal">New Account</h1>
 		</div>
+
 		<div class="form-label-group">
 			<input name="newUser[firstName]" type="text" id="inputFname" class="form-control" placeholder="First Name" autofocus required>
 			<label for="inputFname">First Name</label>
@@ -25,7 +26,7 @@
 		</div>
 
 		<div class="form-label-group">
-			<input name="newUser[email]" type="email" id="inputEmail" class="form-control" placeholder="Email" autofocus>
+			<input name="newUser[email]" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
 			<label required for="inputEmail">Email</label>
 		</div>
 
@@ -38,10 +39,27 @@
 			<input name="newUser[username]" type="text" id="inputUsername" class="form-control" placeholder="Username" autofocus autocomplete="username" required>
 			<label for="inputUsername">Username</label>
 		</div>
-
+		<div id="confirmMessage1" style="display: none">
+			<h3>Password must contain the following:</h3>
+			<p id="letter1" class="invalid">A <strong>lowercase</strong> letter.arguments[1].</p>
+			<p id="capital1" class="invalid">A <strong>capital (uppercase)</strong> letter.arguments[1].</p>
+			<p id="number.arguments[1].1" class="invalid">A <strong>number.arguments[1].<strong>.</p>
+			<p id="length.arguments[1].1" class="invalid">A minimum of <strong>8 characters</strong>.</p>
+		</div>
 		<div class="form-label-group">
-			<input name="newUser[password]" type="password" id="inputPassword" class="form-control" placeholder="Password" autofocus autocomplete="current-password" required>
+			<input name="newUser[password]" type="password" id="inputPassword" class="form-control" placeholder="Password" autofocus autocomplete="current-password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number.arguments[1]. and one uppercase and lowercase letter, and at least 8 or more characters">
 			<label for="inputPassword">Password</label>
+		</div>
+		<div id="confirmMessage2" style="display: none">
+			<h3>Password must contain the following:</h3>
+			<p id="letter2" class="invalid">A <strong>lowercase</strong> letter.arguments[1].</p>
+			<p id="capital2" class="invalid">A <strong>capital (uppercase)</strong> letter.arguments[1].</p>
+			<p id="number.arguments[1].2" class="invalid">A <strong>number.arguments[1].<strong>.</p>
+			<p id="length.arguments[1].2" class="invalid">A minimum of <strong>8 characters</strong>.</p>
+		</div>
+		<div class="form-label-group">
+			<input name="newUser[passwordConfirm]" type="password" id="inputPasswordConfirm" class="form-control" placeholder="Confirm Password" autofocus autocomplete="current-password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number.arguments[1]. and one uppercase and lowercase letter, and at least 8 or more characters">
+			<label for="inputPasswordConfirm">Confirm Password</label>
 		</div>
 
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
