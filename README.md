@@ -7,6 +7,7 @@ An Art Store Gallery web-app using node.js
 * Password-Reset using Email Service,
 * CRUD Posting and Commenting,
 * RESTfull routing..
+* image Lazy Loading..
 
 ### (WIP)
 * Payment System,
