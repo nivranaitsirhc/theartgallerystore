@@ -98,28 +98,32 @@ router.post('/new', middleware.isLoggedIn,upload.single('imageUpload'), async (r
 				fullName 	: req.user.fullName
 			}
 		};
-
-		//check if we are using upload service or not
-		if(req.body.imageType === 'upload'){
-			newartgallery.image = await cloudinary.uploader.upload(req.file.path,
-				{
-					use_filename	:true,
-					folder 			: `artgallery/post/${req.user.username}/${req.body.title}`,
-					tags 			: [
-						'post',
-						`${req.user.username}`,
-						`${req.body.title}`
-					],
-					quality : "auto:good"
-				}
-			);
-			newartgallery.image.thumb_url = await cloudinary.url(newartgallery.image.public_id,{secure:true,crop:'thumb'});
-			newartgallery.image.uploadType = 'upload';
-		} else if(req.body.imageType === 'url'){
-			newartgallery.image.uploadType = 'url';
-			newartgallery.image.secure_url = req.body.imageUrl;
-			newartgallery.image.thumb_url = req.body.imageUrl;
+		let imgPath;
+		switch (req.body.selectUploadType) {
+			case 'upload':
+				imgPath = req.file.path;
+				break;
+			case 'url' :
+				imgPath = req.body.imageUrl;
+				break;
+			default:
+				throw {message:`unhandled error, unrecognized selectUploadType ${req.body.selectUploadType}`};
 		}
+		newartgallery.image = await cloudinary.uploader.upload(imgPath,
+			{
+				use_filename	:true,
+				folder 			: `artgallery/post/${req.user.username}/${req.body.title}`,
+				tags 			: [
+					'post',
+					`${req.user.username}`,
+					`${req.body.title}`
+				],
+				quality : "auto:good"
+			}
+		);
+		newartgallery.image.uploadType 		= req.body.imageType;
+		newartgallery.image.thumb_url 		= await cloudinary.url(newartgallery.image.public_id,{secure:true,crop:'thumb',quality:30});
+		newartgallery.image.placeholder_url = await cloudinary.url(newartgallery.image.public_id,{secure:true,effect:{blur:1000},quality:10});
 		let newlyCreated = await Artgallery.create(newartgallery);
 		req.flash('success',`Added ${newlyCreated.title}`);
 		res.redirect(`/artgallery/${newlyCreated._id}`);
@@ -169,11 +173,26 @@ router.get('/:id/edit', middleware.checkArtgalleryOwnership,(req,res)=>{
 router.put('/:id',middleware.checkArtgalleryOwnership,upload.single('imageUpload'), async (req,res)=>{
 	try {
 		let foundartgallery = await Artgallery.findById(req.params.id);
-		if(req.file && req.body.imageType === 'upload'){
+		
+		
+		if(req.body.selectUploadType !== 'none'){
+			let imgPath;
+			switch (req.body.selectUploadType) {
+				case 'upload':
+					imgPath = req.file.path;
+					break;
+				case 'url' :
+					imgPath = req.body.imageUrl;
+					break;
+				default:
+					throw {message:`unhandled error, unrecognized selectUploadType ${req.body.selectUploadType}`};
+			}
+
+
 			if(foundartgallery.image.public_id){
 				await cloudinary.uploader.destroy(foundartgallery.image.public_id,{invalidate:true});
 			}
-			foundartgallery.image = await cloudinary.uploader.upload(req.file.path,
+			foundartgallery.image = await cloudinary.uploader.upload(imgPath,
 				{
 					use_filename	:true,
 					folder 			: `artgallery/post/${req.user.username}/${req.body.title}`,
@@ -185,19 +204,14 @@ router.put('/:id',middleware.checkArtgalleryOwnership,upload.single('imageUpload
 					quality : "auto:best"
 				}
 			);
-			foundartgallery.image.thumb_url = await cloudinary.url(foundartgallery.image.public_id,{secure:true,crop:"thumb"});
-			foundartgallery.image.uploadType = 'upload';
-		} else if (req.body.imageType === 'url') {
-			foundartgallery.image.uploadType = 'url';
-			foundartgallery.image.public_id = null;
-			foundartgallery.image.signature = null;
-			foundartgallery.image.secure_url = req.body.imageUrl;
-			foundartgallery.image.thumb_url = req.body.imageUrl;
+			foundartgallery.image.uploadType 		= req.body.imageType;
+			foundartgallery.image.thumb_url 		= await cloudinary.url(foundartgallery.image.public_id,{secure:true,crop:'thumb',quality:30});
+			foundartgallery.image.placeholder_url 	= await cloudinary.url(foundartgallery.image.public_id,{secure:true,effect:{blur:1000},quality:10});
 		}
 
 		let artType = JSON.parse(req.body.artType);
 		if(artType.index === 3){
-			artType.name = req.body.artTypeOthers;
+			artType.name = req.body.artTypeOtherName;
 		}
 		foundartgallery.title 			= req.body.title;
 		foundartgallery.price 			= req.body.price;

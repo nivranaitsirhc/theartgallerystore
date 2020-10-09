@@ -11,10 +11,10 @@
 	<div class="col-md-12 order-first-md">
 		<article class="my-2">
 			<figure class="figure">
-				<img src="<%=artgallery.image.secure_url%>" class="img img-fluid">
+				<img data-src="<%=artgallery.image.secure_url%>" class="img img-fluid lazy" src="<%=artgallery.image.placeholder_url%>" width="<%=artgallery.image.width%>" height="<%=artgallery.image.height%>">
 			</figure>
 			<header>
-				<p><%=artgallery.description%></p>
+				<p align="justify"><%=artgallery.description%></p>
 				<h4 class="card-title wrap-p"><strong><%=artgallery.title%></h4></strong>
 			</header>
 			<section class="mt-2">
@@ -75,7 +75,7 @@
 				</header>
 				<section class="col-6 text-right">
 					<form action="/artgallery/<%=artgallery.id%>/comments/new" method="GET">
-						<button class="btn btn-success" >Add Comment</button>
+						<button class="btn btn-primary" >Add Comment</button>
 					</form>
 				</section>
 			</div>

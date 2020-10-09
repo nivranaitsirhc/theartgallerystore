@@ -11,15 +11,21 @@
 			<div class="mb-3">
 				<label for="image">Artwork</label>
 
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="imageType" value="url" id="imageTypeUrl" onclick="imgUrl()">
-					<label class="form-check-label" for="imageTypeUrl">Use Url</label>
+				<div class="input-group mb-3">
+					<label class="input-group-text" for="artTypeSelect">Update</label>
+					<select name="selectUploadType" class="form-select" id="artTypeSelect">
+						<option value="url">Use an image url</option>
+						<option value="upload">Upload an image file</option>
+					</select>
 				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="imageType" value="upload" id="imageTypeUpload" onclick="imgUpload()" checked>
-					<label class="form-check-label" for="imageTypeUpload" >Upload Image</label>
+
+				<div id="containerImageUrl">
+					<div class="input-group">
+						<label class="input-group-text" for="imageUrlInput">Image url</label>
+						<input id="imageUrlInput" class="form-control" type="text" name="imageUrl" placeholder="http(s)://" title="Please fill-in a valid url" pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg|gif)">
+					</div>
 				</div>
-				<div id="containerImageUpload">
+				<div id="containerImageUpload" style="display: none">
 					<div class="input-group" >
 						<span class="input-group-text" id="imageUpload">Upload</span>
 						<div class="form-file">
@@ -27,14 +33,6 @@
 							<label class="form-file-label" for="imageUploadInput">
 								<span class="form-file-text" id="imgUploadText">Choose file...</span>
 							</label>
-						</div>
-					</div>
-				</div>
-				<div id="containerImageUrl" style="display: none">
-					<div class="input-group">
-						<label class="input-group-text" for="imageUrlInput">Image url</label>
-						<div class="form-file">
-							<input id="imageUrlInput" class="form-control" type="text" name="imageUrl" placeholder="http(s)://" title="Please fill-in a valid url" pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg)|(\/[\w\W]+\.(jpg|png|svg)|[\w]+\/[\w\W]+\.(jpg|png|svg))">
 						</div>
 					</div>
 				</div>
@@ -50,9 +48,9 @@
 						<%})%>
 					</select>
 				</div>
-				<div class="form-group mt-3" id="artTypeOthers-Container" style="display:none;">
-					<label for="artTypeOthers">Others</label>
-					<input class="form-control" type="text" name="artTypeOthers" id="artTypeOthers" placeholder="Define your artwork..">
+				<div class="form-group mt-3" id="artTypeOthersContainer" style="display:none;">
+					<label for="artTypeOtherName">Others</label>
+					<input class="form-control" type="text" name="artTypeOtherName" id="artTypeOtherName" placeholder="Define your artwork..">
 				</div>
 			</div>
 			
