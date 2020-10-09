@@ -3,87 +3,91 @@
 		<h1 class="mb-3 mt-5">Edit <strong><%=artgallery.title%></strong></h1>
 	</div>
 
-	<div class="row justify-content-center mb-5" >
-		<form class="col col-md-10 col-lg-6" action="/artgallery/<%=artgallery.id%>?_method=PUT" method="POST" enctype="multipart/form-data">
-			<div class="mb-3">
-				<label for="title">Title</label>
-				<input class="form-control" id="title" type="text" name="title" value="<%=artgallery.title%>" required autofocus>
-			</div>
-			<div class="mb-3">
-				<label for="image">Artwork</label>
-				<div class="input-group mb-3">
-					<label class="input-group-text" for="artTypeSelect">Upload</label>
-					<select name="selectUploadType" class="form-select" id="artTypeSelect">
-						<option value="none" selected>None</option>
-						<option value="url">Use an image url</option>
-						<option value="upload">Upload an image file</option>
-					</select>
+	<div class="row justify-content-center mb-5">
+		<div class="col col-md-9 col-lg-6" >
+			<form action="/artgallery/<%=artgallery.id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+				<div class="mb-3">
+					<label for="title">Title</label>
+					<input class="form-control" id="title" type="text" name="title" value="<%=artgallery.title%>" required autofocus>
 				</div>
-				<div id="containerImageUpload" style="display: none">
-					<div class="input-group" >
-						<span class="input-group-text" id="imageUpload">Upload</span>
-						<div class="form-file">
-							<input type="file" class="form-file-input" id="imageUploadInput" aria-describedby="Upload Artwork"  accept="image/*" name="imageUpload">
-							<label class="form-file-label" for="imageUploadInput">
-								<span class="form-file-text" id="imgUploadText">Choose file...</span>
-							</label>
+				<div class="mb-3">
+					<label for="image">Artwork</label>
+					<div class="input-group mb-3">
+						<label class="input-group-text" for="artTypeSelect">Upload</label>
+						<select name="selectUploadType" class="form-select" id="artTypeSelect">
+							<option value="none" selected>None</option>
+							<option value="url">Use an image url</option>
+							<option value="upload">Upload an image file</option>
+						</select>
+					</div>
+					<div id="containerImageUpload" style="display: none">
+						<div class="input-group" >
+							<span class="input-group-text" id="imageUpload">Upload</span>
+							<div class="form-file">
+								<input type="file" class="form-file-input" id="imageUploadInput" aria-describedby="Upload Artwork"  accept="image/*" name="imageUpload">
+								<label class="form-file-label" for="imageUploadInput">
+									<span class="form-file-text" id="imgUploadText">Choose file...</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div id="containerImageUrl" style="display: none">
+						<div class="input-group">
+							<label class="input-group-text" for="imageUrlInput">Image url</label>
+							<input id="imageUrlInput" class="form-control" type="text" name="imageUrl" placeholder="http(s)://" title="Please fill-in a valid url" pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg|gif)" value="<%=artgallery.image.secure_url%>" >
 						</div>
 					</div>
 				</div>
-				<div id="containerImageUrl" style="display: none">
+				<div class="mb-3">
+					<label for="artType">Art Type</label>
 					<div class="input-group">
-						<label class="input-group-text" for="imageUrlInput">Image url</label>
-						<input id="imageUrlInput" class="form-control" type="text" name="imageUrl" placeholder="http(s)://" title="Please fill-in a valid url" pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg|gif)" value="<%=artgallery.image.secure_url%>" >
+						<label class="input-group-text" for="artType">Choose</label>
+						<!-- <input class="form-control" id="artType" type="text" name="artType"> -->
+						<select class="form-select" id="artType" name="artType">
+							<%artType.forEach(x =>{%>
+								<option value='{"index":<%=x.index%>,"name":"<%=x.name%>"}'
+								<%if(artgallery.artType.index == x.index){%>
+									selected
+								<%}%>
+								><%=x.name%></option>
+							<%})%>
+						</select>
 					</div>
 				</div>
-			</div>
-			<div class="mb-3">
-				<label for="artType">Art Type</label>
-				<div class="input-group">
-					<label class="input-group-text" for="artType">Choose</label>
-					<!-- <input class="form-control" id="artType" type="text" name="artType"> -->
-					<select class="form-select" id="artType" name="artType">
-						<%artType.forEach(x =>{%>
-							<option value='{"index":<%=x.index%>,"name":"<%=x.name%>"}'
-							<%if(artgallery.artType.index == x.index){%>
-								selected
-							<%}%>
-							><%=x.name%></option>
-						<%})%>
-					</select>
+				<div class="input-group mb-3" id="artTypeOthersContainer" <%if(artgallery.artType.index !== 3){%>style="display:none"<%}%>>
+					<label class="input-group-text" for="artTypeOtherName" >Others</label>
+					<input class="form-control" id="artTypeOtherName" type="text" name="artTypeOtherName" placeholder="Define your artwork.." <%if(artgallery.artType.index === 3){%>value="<%=artgallery.artType.name%>"<%}%>>
 				</div>
-			</div>
-			<div class="input-group mb-3" id="artTypeOthersContainer" <%if(artgallery.artType.index !== 3){%>style="display:none"<%}%>>
-				<label class="input-group-text" for="artTypeOtherName" >Others</label>
-				<input class="form-control" id="artTypeOtherName" type="text" name="artTypeOtherName" placeholder="Define your artwork.." <%if(artgallery.artType.index === 3){%>value="<%=artgallery.artType.name%>"<%}%>>
-			</div>
-			<div class="mb-3">
-				<label for="status">Status</label>
-				<div class="input-group">
-					<label class="input-group-text" for="status">Choose</label>
-					<select class="form-select" id="status" name="status">
-						<%statusList.forEach(x =>{%>
-							<option value='{"index":<%=x.index%>,"name":"<%=x.name%>"}' <%if(artgallery.status.index == x.index){%>
-									selected
-								<%}%>><%=x.name%></option>
-						<%})%>
-					</select>
+				<div class="mb-3">
+					<label for="status">Status</label>
+					<div class="input-group">
+						<label class="input-group-text" for="status">Choose</label>
+						<select class="form-select" id="status" name="status">
+							<%statusList.forEach(x =>{%>
+								<option value='{"index":<%=x.index%>,"name":"<%=x.name%>"}' <%if(artgallery.status.index == x.index){%>
+										selected
+									<%}%>><%=x.name%></option>
+							<%})%>
+						</select>
+					</div>
 				</div>
-			</div>
-			<div class="mb-3 ">
-				<label>Price</label>
-				<div class="input-group">
-					<label class="input-group-text" for="price">&#8369;</label>
-					<input class="form-control" id="price" type="number" name="price" step="0.5" min="0.00" value="<%=artgallery.price%>">
+				<div class="mb-3 ">
+					<label>Price</label>
+					<div class="input-group">
+						<label class="input-group-text" for="price">&#8369;</label>
+						<input class="form-control" id="price" type="number" name="price" step="0.5" min="0.00" value="<%=artgallery.price%>">
+					</div>
 				</div>
+				<div class="mb-3">
+					<label for="description">Description</label>
+					<textarea class="form-control" id="description" name="description" placeholder="Description" autofocus="true" rows="3"><%=artgallery.description%></textarea>
+				</div>
+				<input class="btn btn-primary btn-block" type="submit" value="Submit Artwork">
+			</form>
+			<div class="mt-2">
+				<a href="/artgallery/<%=artgallery._id%>"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>  Go Back</a>
 			</div>
-			<div class="mb-3">
-				<label for="description">Description</label>
-				<textarea class="form-control" id="description" name="description" placeholder="Description" autofocus="true" rows="3"><%=artgallery.description%></textarea>
-			</div>
-			<input class="btn btn-primary btn-block" type="submit" value="Submit Artwork">
-			<a class="d-block mt-3" href="/artgallery/<%=artgallery._id%>"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>  Go Back</a>
-		</form>
+		</div>
 	</div>
 	<script type="text/javascript" src="/assets/js/new-art.js"></script>
 <%-include("../partials/footer")%>

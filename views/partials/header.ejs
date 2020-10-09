@@ -43,42 +43,46 @@
 <!-- navigation bar -->
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top">
 	<div class="container">
-		<a class="navbar-brand" href="/"><i class="fa fa-artstation" aria-hidden="true"></i> The Art Store Gallery</a></a>
+		<a class="navbar-brand" href="/"><i class="fa fa-paint-brush" aria-hidden="true"></i> The Art Store Gallery</a></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 	<ul class="navbar-nav mr-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/artgallery" aria-current="Gallery">Gallery</a>
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="GalleryDropdownMenu" role="button" data-toggle="dropdown" aria-expanded="false">Gallery</a>
+			<ul class="dropdown-menu" aria-labelledby="GalleryDropdownMenu">
+				<li><a class="dropdown-item" href="/artgallery"><i class="fa fa-picture-o" aria-hidden="true"></i> Art Works</a></li>
+				<li><a class="dropdown-item" href="/artgallery/new"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New Art</a></li>
+			</ul>
 		</li>
 	</ul>
-	<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-	<%if(typeof page !== 'undefined' && page === 'artgallery'){%>
+	<div class="ml-auto mb-2 mb-lg-0">
 		<form class="d-flex" action="/artgallery" method="GET">
 			<input class="form-control mr-2" name="search" type="search" placeholder="Search Art Title" aria-label="Search Art Title">
-			<button class="btn btn-outline-success" type="submit">Search</button>
+			<button class="btn btn-outline-success w-auto" type="submit"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
 		</form>
-	<%}%>
+	</div>
+	<ul class="navbar-nav mb-2 mb-lg-0">
 	<%if(!currentUser){%>
 		<li class="nav-item">
-			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/signin">Sign-in <i class="fa fa-user"></i></a>
+			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/signin"><i class="fa fa-user" aria-hidden="true"></i> Sign-in</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/signup">Sign-up <i class="fa fa-user-plus"></i></a>
+			<a class="nav-link <%=typeof page !== 'undefined' && page === 'artgallery' ? 'active' : ''%>" href="/signup"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign-up</a>
 		</li>
 	<%} else {%>
 		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="text-transform: lowercase"><%=currentUser.firstName%></a>
+			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="text-transform: lowercase"><%=currentUser.firstName%> <i class="fa fa-user-circle" aria-hidden="true"></i> </a>
 			<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<li><a class="dropdown-item" href="/user/<%=currentUser.id%>">Profile</a></li>
-				 <li><hr class="dropdown-divider"></li>
-				<li><a class="dropdown-item" href="/logout">Logout</a></li>
+				<li><a class="dropdown-item" href="/user/<%=currentUser.id%>"> <i class="fa fa-address-book-o" aria-hidden="true"></i> Profile</a></li>
+				<li><hr class="dropdown-divider"></li>
+				<li><a class="dropdown-item" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
 			</ul>
 		</li>
 	<%}%>
-      </ul>
-    </div>
+	  </ul>
+	</div>
   </div>
 </nav>
 <%if(msg_error.length > 0 || msg_success.length > 0){%>
