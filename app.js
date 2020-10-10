@@ -11,7 +11,8 @@ const	express 			= require('express'),
 		passport 			= require('passport'),
 		localStrategy 		= require('passport-local'),
 		session 			= require('express-session'),
-		MongoDBStore 		= require('connect-mongodb-session')(session);
+		MongoDBStore 		= require('connect-mongodb-session')(session),
+		helmet 				= require("helmet");
 
 // models
 const	User 		= require('./models/user'),
@@ -87,20 +88,23 @@ let sessionConfig = {
 	secret: 'a picture is worth a thousand words',
 	cookie : {
 		path: '/',
-		secure: false,
+		secure: true,
 		httpOnly: true,
-		maxAge: 856800, // 1 week
-		sameSite: 'strict'
+		domain: 'heroku.app',
+		maxAge: 604_800_000, // 1 week
+		sameSite: true
 	},
 	store: store, // use mongodbstrore
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: true
 };
-// if(app.get('env') === 'production'){
-// 	sessionConfig.cookie.secure = true
-// 	app.set('trust proxy', 1) // trust first proxy
-// 	console.log('running in poduction..')
-// }
+
+if(process.env.NODE_ENV !== 'production'){
+	sessionConfig.cookie.secure = false;
+	sessionConfig.cookie.httpOnly = false;
+	sessionConfig.cookie.domain = '';
+	sessionConfig.cookie.sameSite = false;
+}
 app.use(session(sessionConfig));
 
 // express passport-configuration
@@ -119,6 +123,24 @@ app.use((req,res,next)=>{
 	res.locals.msg_success 	= req.flash('success');
 	next();
 });
+
+
+// use helmet
+app.use(helmet({
+	contentSecurityPolicy: {
+		directives : {
+			defaultSrc : [ "'self'"],
+			baseUri : [ "'self'"],
+			fontSrc : [ "'self'", "https:","data:"],
+			frameAncestors : [ "'self'"],
+			imgSrc : [ "'self'", "https:","data:" ],
+			objectSrc : [ "'none'"],
+			scriptSrc : [ "'self'"],
+			scriptSrcAttr : [ "'none'"],
+			styleSrc : [ "'self'", "https:", "'unsafe-inline'" ]
+		}
+	}
+}));
 
  // Routes
 app.use('/',indexRoutes);
