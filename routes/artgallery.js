@@ -1,11 +1,12 @@
 // modules
-const	express		= require('express'),
-		mongoose 	= require('mongoose'),
-		request		= require('request'),
-		cloudinary 	= require('cloudinary').v2,
-		streamifier = require('streamifier'),
-		multer		= require('multer'),
-		moment		= require('moment');
+const	express			= require('express'),
+		htmlSanitizer	= require('sanitize-html'),
+		mongoose 		= require('mongoose'),
+		request			= require('request'),
+		cloudinary 		= require('cloudinary').v2,
+		streamifier 	= require('streamifier'),
+		multer			= require('multer'),
+		moment			= require('moment');
 
 const 	router 		= express.Router(),
 		Artgallery	= require('../models/artgallery');
@@ -16,6 +17,33 @@ const 	middleware 	= require('../middleware');
 const 	artGalleryStatusList	= require('../utils/artGalleryStatusList'),
 		artGalleryType			= require('../utils/artGalleryType');
 
+let htmlSanitizerOptions = {
+	allowedTags: [
+		"address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+		"h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+		"dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
+		"ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+		"em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+		"small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+		"col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr","img"
+	],
+	disallowedTagsMode: 'discard',
+	allowedAttributes: {
+		a: [ 'href', 'name', 'target' ],
+		// We don't currently allow img itself by default, but this
+		// would make sense if we did. You could add srcset here,
+		// and if you do the URL is checked for safety
+		img: [ 'src' ]
+	},
+	// Lots of these won't come up by default because we don't allow them
+	selfClosing: [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ],
+	// URL schemes we permit
+	allowedSchemes: [ 'http', 'https', 'ftp', 'mailto'],
+	allowedSchemesByTag: {},
+	allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
+	allowProtocolRelative: true,
+	enforceHtmlBoundary: false
+}
 
 let storage = multer.diskStorage({
 	filename: function(req,file,cb){
@@ -91,7 +119,7 @@ router.post('/new', middleware.isLoggedIn,upload.single('imageUpload'), async (r
 			status 		: JSON.parse(req.body.status),
 			artType 	: artType,
 			image 		: {},
-			description : req.sanitize(req.body.description),
+			description : htmlSanitizer(req.body.description,htmlSanitizerOptions),
 			author 		: {
 				id 			: req.user._id,
 				username 	: req.user.username,
@@ -217,7 +245,7 @@ router.put('/:id',middleware.checkArtgalleryOwnership,upload.single('imageUpload
 		foundartgallery.price 			= req.body.price;
 		foundartgallery.status 			= JSON.parse(req.body.status);
 		foundartgallery.artType 		= artType;
-		foundartgallery.description 	= req.sanitize(req.body.description);
+		foundartgallery.description 	= htmlSanitizer(req.body.description,htmlSanitizerOptions);
 		foundartgallery.author.id 		= req.user._id;
 		foundartgallery.author.username = req.user.username;
 		foundartgallery.author.fullName = req.user.fullName;

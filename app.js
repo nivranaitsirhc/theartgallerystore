@@ -1,6 +1,5 @@
 // modules
 const	express 			= require('express'),
-		expressSanitizer	= require('express-sanitizer'),
 		compression 		= require('compression'),
 		cache				= require('cache-control'),
 		mongoose 			= require('mongoose'),
@@ -39,17 +38,18 @@ app.set('view engine', 'ejs');
 // express - use moment
 app.locals.moment = moment;
 
+//
+app.use(express.json());
+
 // express use the bodyparser module
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(expressSanitizer()); // must be after bodyParser
+
 // express serve static files
 app.use(express.static(__dirname+'/public'));
 // express - use flash
 app.use(flash());
 // express - use method-override
 app.use(methodOverride('_method'));
-//
-app.use(express.json());
 //
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

@@ -1,5 +1,6 @@
 // modules
-const 	express 	= require('express');
+const 	express 		= require('express'),
+		htmlSanitizer	= require('sanitize-html');
 
 const 	router 		= express.Router({mergeParams:true}), // mergeParams so that we can use the app.js params
 		Artgallery 	= require('../models/artgallery'),
@@ -8,7 +9,33 @@ const 	router 		= express.Router({mergeParams:true}), // mergeParams so that we 
 //middleware
 const 	middleware 	= require('../middleware');
 
-
+let htmlSanitizerOptions = {
+	allowedTags: [
+		"address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+		"h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+		"dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
+		"ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+		"em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+		"small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+		"col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr","img"
+	],
+	disallowedTagsMode: 'discard',
+	allowedAttributes: {
+		a: [ 'href', 'name', 'target' ],
+		// We don't currently allow img itself by default, but this
+		// would make sense if we did. You could add srcset here,
+		// and if you do the URL is checked for safety
+		img: [ 'src' ]
+	},
+	// Lots of these won't come up by default because we don't allow them
+	selfClosing: [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ],
+	// URL schemes we permit
+	allowedSchemes: [ 'http', 'https', 'ftp', 'mailto' ],
+	allowedSchemesByTag: {},
+	allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
+	allowProtocolRelative: true,
+	enforceHtmlBoundary: false
+}
 
 // new -- create new comments
 router.get('/new',middleware.isLoggedIn,(req, res)=>{
@@ -27,7 +54,7 @@ router.get('/new',middleware.isLoggedIn,(req, res)=>{
 router.post('/',middleware.isLoggedIn, async (req,res)=>{
 	try {
 		let artgallery = await Artgallery.findById(req.params.id);
-		let comment = await Comment.create(req.body.comment);
+		let comment = await Comment.create(htmlSanitizer(req.body.comment,htmlSanitizerOptions));
 		comment.author.id = req.user._id;
 		comment.author.username = req.user.username;
 		comment.author.fullName = req.user.fullName;
@@ -62,7 +89,7 @@ router.get('/:comment_id/edit',middleware.checkCommentOwnership,(req,res)=>{
 
 // update -- update comment
 router.put('/:comment_id',middleware.checkCommentOwnership,(req,res)=>{
-	Comment.findByIdAndUpdate(req.params.comment_id,req.body.comment,(err)=>{
+	Comment.findByIdAndUpdate(req.params.comment_id,htmlSanitizer(req.body.comment,htmlSanitizerOptions),(err)=>{
 		if(err){
             console.log(err);
 			req.flash("error", err.message);
