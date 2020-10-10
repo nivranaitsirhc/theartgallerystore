@@ -90,7 +90,7 @@ let sessionConfig = {
 		path: '/',
 		secure: false,
 		httpOnly: true,
-		domain: 'herokuapp.com',
+		domain: '',
 		maxAge: 604_800_000, // 1 week
 		sameSite: true
 	},
