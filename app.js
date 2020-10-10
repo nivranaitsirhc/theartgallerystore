@@ -88,15 +88,15 @@ let sessionConfig = {
 	secret: process.env.SESSION_SECRET,
 	cookie : {
 		path: '/',
-		secure: true,
+		secure: false,
 		httpOnly: true,
-		domain: 'heroku.app',
+		domain: 'herokuapp.com',
 		maxAge: 604_800_000, // 1 week
 		sameSite: true
 	},
 	store: store, // use mongodbstrore
 	resave: false,
-	saveUninitialized: true
+	saveUninitialized: false
 };
 
 if(process.env.NODE_ENV !== 'production'){
@@ -104,6 +104,7 @@ if(process.env.NODE_ENV !== 'production'){
 	sessionConfig.cookie.httpOnly = false;
 	sessionConfig.cookie.domain = '';
 	sessionConfig.cookie.sameSite = false;
+	console.log('running in development')
 }
 app.use(session(sessionConfig));
 
