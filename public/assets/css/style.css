@@ -8,6 +8,14 @@ body {
 	background-image: linear-gradient(0deg, #29323c 0%, #485563 100%);
 	/*min-height: 100vh;*/
 	/*min-height: -webkit-fill-available;*/
+
+
+}
+
+
+/*remove decoration for links*/
+a {
+	text-decoration: none;
 }
 
 /* ------------- footer styling ------------- */

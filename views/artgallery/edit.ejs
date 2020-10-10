@@ -22,7 +22,7 @@
 					</div>
 					<div id="containerImageUpload" style="display: none">
 						<div class="input-group" >
-							<span class="input-group-text" id="imageUpload">Upload</span>
+							<!-- <span class="input-group-text" id="imageUpload">Choose</span> -->
 							<div class="form-file">
 								<input type="file" class="form-file-input" id="imageUploadInput" aria-describedby="Upload Artwork"  accept="image/*" name="imageUpload">
 								<label class="form-file-label" for="imageUploadInput">
@@ -33,7 +33,7 @@
 					</div>
 					<div id="containerImageUrl" style="display: none">
 						<div class="input-group">
-							<label class="input-group-text" for="imageUrlInput">Image url</label>
+							<!-- <label class="input-group-text" for="imageUrlInput">Image url</label> -->
 							<input id="imageUrlInput" class="form-control" type="text" name="imageUrl" placeholder="http(s)://" title="Please fill-in a valid url" pattern="(https?|ftps?):\/\/[\w\W]+\.(jpg|png|svg|gif)" value="<%=artgallery.image.secure_url%>" >
 						</div>
 					</div>
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 				<div class="input-group mb-3" id="artTypeOthersContainer" <%if(artgallery.artType.index !== 3){%>style="display:none"<%}%>>
-					<label class="input-group-text" for="artTypeOtherName" >Others</label>
+					<!-- <label class="input-group-text" for="artTypeOtherName" >Others</label> -->
 					<input class="form-control" id="artTypeOtherName" type="text" name="artTypeOtherName" placeholder="Define your artwork.." <%if(artgallery.artType.index === 3){%>value="<%=artgallery.artType.name%>"<%}%>>
 				</div>
 				<div class="mb-3">
@@ -80,7 +80,7 @@
 				</div>
 				<div class="mb-3">
 					<label for="description">Description</label>
-					<textarea class="form-control" id="description" name="description" placeholder="Description" autofocus="true" rows="3"><%=artgallery.description%></textarea>
+					<textarea class="form-control" id="description" name="description" placeholder="Description" autofocus="true" rows="6"><%=artgallery.description%></textarea>
 				</div>
 				<input class="btn btn-primary btn-block" type="submit" value="Submit Artwork">
 			</form>

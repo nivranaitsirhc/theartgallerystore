@@ -1,17 +1,18 @@
 // modules
-const	express 	= require('express'),
-		compression = require('compression'),
-		cache		= require('cache-control'),
-		mongoose 	= require('mongoose'),
-		axios 		= require('axios'),
-		bodyParser 	= require('body-parser'),
-		methodOverride = require('method-override'),
-		flash		= require('connect-flash'),
-		moment		= require('moment'),
-		passport 	= require('passport'),
-		localStrategy = require('passport-local'),
-		session 	= require('express-session'),
-		MongoDBStore = require('connect-mongodb-session')(session);
+const	express 			= require('express'),
+		expressSanitizer	= require('express-sanitizer'),
+		compression 		= require('compression'),
+		cache				= require('cache-control'),
+		mongoose 			= require('mongoose'),
+		axios 				= require('axios'),
+		bodyParser 			= require('body-parser'),
+		methodOverride 		= require('method-override'),
+		flash				= require('connect-flash'),
+		moment				= require('moment'),
+		passport 			= require('passport'),
+		localStrategy 		= require('passport-local'),
+		session 			= require('express-session'),
+		MongoDBStore 		= require('connect-mongodb-session')(session);
 
 // models
 const	User 		= require('./models/user'),
@@ -40,6 +41,7 @@ app.locals.moment = moment;
 
 // express use the bodyparser module
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(expressSanitizer()); // must be after bodyParser
 // express serve static files
 app.use(express.static(__dirname+'/public'));
 // express - use flash

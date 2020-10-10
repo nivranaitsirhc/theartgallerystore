@@ -83,7 +83,7 @@ router.post('/new', middleware.isLoggedIn,upload.single('imageUpload'), async (r
 		let artType = JSON.parse(req.body.artType);
 
 		if(artType.index === 3){
-			artType.name = req.body.artTypeOthers;
+			artType.name = req.body.artTypeOtherName;
 		}
 		let newartgallery = {
 			title 		: req.body.title,
@@ -91,7 +91,7 @@ router.post('/new', middleware.isLoggedIn,upload.single('imageUpload'), async (r
 			status 		: JSON.parse(req.body.status),
 			artType 	: artType,
 			image 		: {},
-			description : req.body.description,
+			description : req.sanitize(req.body.description),
 			author 		: {
 				id 			: req.user._id,
 				username 	: req.user.username,
@@ -217,7 +217,7 @@ router.put('/:id',middleware.checkArtgalleryOwnership,upload.single('imageUpload
 		foundartgallery.price 			= req.body.price;
 		foundartgallery.status 			= JSON.parse(req.body.status);
 		foundartgallery.artType 		= artType;
-		foundartgallery.description 	= req.body.description;
+		foundartgallery.description 	= req.sanitize(req.body.description);
 		foundartgallery.author.id 		= req.user._id;
 		foundartgallery.author.username = req.user.username;
 		foundartgallery.author.fullName = req.user.fullName;
