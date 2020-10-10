@@ -135,7 +135,7 @@ app.use(helmet({
 			frameAncestors : [ "'self'"],
 			imgSrc : [ "'self'", "https:","data:" ],
 			objectSrc : [ "'none'"],
-			scriptSrc : [ "'self'"],
+			scriptSrc : [ "'self'", "'unsafe-inline'"],
 			scriptSrcAttr : [ "'none'"],
 			styleSrc : [ "'self'", "https:", "'unsafe-inline'" ]
 		}

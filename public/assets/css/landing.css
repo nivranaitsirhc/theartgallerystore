@@ -7,7 +7,7 @@ html,body {
   z-index: 1;
   position: relative;
   text-align: center;
-  padding-top: 40vh;
+  padding-top: calc(100vh * 0.36);
   height: 100vh;
 }
 

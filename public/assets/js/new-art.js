@@ -1,7 +1,3 @@
-// functions
-function selectDOM(str){
-	return document.querySelector(str);
-}
 // declaration
 let artType = selectDOM('#artType'),
 	artTypeNameTemp = '',
