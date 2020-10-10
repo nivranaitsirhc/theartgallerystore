@@ -85,7 +85,7 @@ app.use(cache({
 
 // session-configuration
 let sessionConfig = {
-	secret: 'a picture is worth a thousand words',
+	secret: process.env.SESSION_SECRET,
 	cookie : {
 		path: '/',
 		secure: true,
