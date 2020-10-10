@@ -25,6 +25,8 @@ router.get("/signup", (req, res)=>{
 //handle sign up logic
 router.post("/signup", async (req, res)=>{
 	try {
+		if(req.body.newUser.password !== req.body.newUser.passwordConfirm) throw {message:'Server Message: Password does not match'};
+
 		req.body.password = req.body.newUser.password;
 		req.body.username = req.body.newUser.username;
 		req.body.newUser.fullName  = `${req.body.newUser.firstName} ${req.body.newUser.middleName} ${req.body.newUser.lastName}`;

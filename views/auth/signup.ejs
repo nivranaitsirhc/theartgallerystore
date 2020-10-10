@@ -6,59 +6,61 @@
 		</div>
 
 		<div class="form-label-group">
-			<input name="newUser[firstName]" type="text" id="inputFname" class="form-control" placeholder="First Name" autofocus required>
+			<input name="newUser[firstName]" type="text" id="inputFname" class="form-control" placeholder="First Name"  required>
 			<label for="inputFname">First Name</label>
 		</div>
 
 		<div class="form-label-group">
-			<input name="newUser[middleName]" type="text" id="inputMname" class="form-control" placeholder="Middle Name (or Initial)" autofocus>
+			<input name="newUser[middleName]" type="text" id="inputMname" class="form-control" placeholder="Middle Name (or Initial)">
 			<label for="inputMname">Middle Name (or Initial)</label>
 		</div>
 
 		<div class="form-label-group">
-			<input name="newUser[lastName]" type="text" id="inputLname" class="form-control" placeholder="Family Name" required autofocus>
+			<input name="newUser[lastName]" type="text" id="inputLname" class="form-control" placeholder="Family Name" required >
 			<label for="inputLname">Family Name</label>
 		</div>
 
 		<div class="form-label-group">
-			<input name="newUser[dateOfBirth]" type="date" id="inputDoB" class="form-control" placeholder="Date of Birth" required autofocus>
+			<input name="newUser[dateOfBirth]" type="date" id="inputDoB" class="form-control" placeholder="Date of Birth" required >
 			<label for="inputDoB">Date of Birth</label>
 		</div>
 
 		<div class="form-label-group">
-			<input name="newUser[email]" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+			<input name="newUser[email]" type="email" id="inputEmail" class="form-control" placeholder="Email" required >
 			<label required for="inputEmail">Email</label>
 		</div>
 
 		<div class="form-label-group">
-			<input name="newUser[avatarUrl]" type="text" id="inputAvatarUrl" class="form-control" placeholder="Avatar Url" autofocus>
+			<input name="newUser[avatarUrl]" type="text" id="inputAvatarUrl" class="form-control" placeholder="Avatar Url" >
 			<label for="inputAvatarUrl">Avatar Url</label>
 		</div>
 
 		<div class="form-label-group">
-			<input name="newUser[username]" type="text" id="inputUsername" class="form-control" placeholder="Username" autofocus autocomplete="username" required>
+			<input name="newUser[username]" type="text" id="inputUsername" class="form-control" placeholder="Username"  autocomplete="username" required>
 			<label for="inputUsername">Username</label>
 		</div>
-		<div id="confirmMessage1" style="display: none">
+		<!-- <div id="confirmMessage1" style="display: none">
 			<h3>Password must contain the following:</h3>
 			<p id="letter1" class="invalid">A <strong>lowercase</strong> letter.arguments[1].</p>
 			<p id="capital1" class="invalid">A <strong>capital (uppercase)</strong> letter.arguments[1].</p>
 			<p id="number.arguments[1].1" class="invalid">A <strong>number.arguments[1].<strong>.</p>
 			<p id="length.arguments[1].1" class="invalid">A minimum of <strong>8 characters</strong>.</p>
-		</div>
+		</div> -->
 		<div class="form-label-group">
-			<input name="newUser[password]" type="password" id="inputPassword" class="form-control" placeholder="Password" autofocus autocomplete="current-password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number.arguments[1]. and one uppercase and lowercase letter, and at least 8 or more characters">
+			<input name="newUser[password]" type="password" id="inputPassword" class="form-control" placeholder="Password" autofocus autocomplete="current-password">
+			<!-- <input name="newUser[password]" type="password" id="inputPassword" class="form-control" placeholder="Password" autofocus autocomplete="current-password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number.arguments[1]. and one uppercase and lowercase letter, and at least 8 or more characters"> -->
 			<label for="inputPassword">Password</label>
 		</div>
-		<div id="confirmMessage2" style="display: none">
+		<!-- <div id="confirmMessage2" style="display: none">
 			<h3>Password must contain the following:</h3>
 			<p id="letter2" class="invalid">A <strong>lowercase</strong> letter.arguments[1].</p>
 			<p id="capital2" class="invalid">A <strong>capital (uppercase)</strong> letter.arguments[1].</p>
 			<p id="number.arguments[1].2" class="invalid">A <strong>number.arguments[1].<strong>.</p>
 			<p id="length.arguments[1].2" class="invalid">A minimum of <strong>8 characters</strong>.</p>
-		</div>
+		</div> -->
 		<div class="form-label-group">
-			<input name="newUser[passwordConfirm]" type="password" id="inputPasswordConfirm" class="form-control" placeholder="Confirm Password" autofocus autocomplete="current-password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number.arguments[1]. and one uppercase and lowercase letter, and at least 8 or more characters">
+			<input name="newUser[passwordConfirm]" type="password" id="inputPasswordConfirm" class="form-control" placeholder="Confirm Password" autofocus autocomplete="current-password" required>
+			<!-- <input name="newUser[passwordConfirm]" type="password" id="inputPasswordConfirm" class="form-control" placeholder="Confirm Password" autofocus autocomplete="current-password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number.arguments[1]. and one uppercase and lowercase letter, and at least 8 or more characters"> -->
 			<label for="inputPasswordConfirm">Confirm Password</label>
 		</div>
 
