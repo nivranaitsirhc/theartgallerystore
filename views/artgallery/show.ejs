@@ -89,7 +89,7 @@
 				<article class="row comment-box mb-2">
 					<header class="col-lg-10 ">
 						<h6><strong><%=comment.title%></strong></h6>
-						<p class="wrap-p"><%=comment.text%></p>
+						<p class="wrap-p"><%-comment.text%></p>
 						<small><strong><a href="/user/<%=comment.author.id%>"><%=comment.author.fullName%></a></strong></small>
 						<small class="text-left d-block">
 							<%if(comment.created.toString() === comment.modified.toString()){%>

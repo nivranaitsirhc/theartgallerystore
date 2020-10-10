@@ -7,8 +7,8 @@
 		<div class="col col-md-9 col-lg-6">
 			<form class="form-style" action="/artgallery/<%=artgallery._id%>/comments" method="POST">
 				<div class="form-group mb-3">
-					<label for="commentTitle">Title</label>
-					<input id="commentTitle" class="form-control" type="text" name="comment[title]" required placeholder="Comment Title.." style="font-weight: bold">
+					<label for="commentTitle">Title <small>(optional)</small></label>
+					<input id="commentTitle" class="form-control" type="text" name="comment[title]" placeholder="Comment Title.." style="font-weight: bold">
 				</div>
 				<div class="form-group mb-3">
 					<label for="commentBody">Message</label>
