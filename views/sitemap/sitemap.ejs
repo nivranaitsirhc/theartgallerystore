@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <!-- landing -->
 	<url>
@@ -9,6 +8,7 @@
 		<!-- <changefreq>yearly</changefreq> -->
 		<priority>0.4</priority>
 	</url>
+
 <!-- about	 -->
 	<url>
 		<loc>https://<%=sitemap.host%>/about</loc>
@@ -45,12 +45,12 @@
 		<priority>0.4</priority>
 	</url>
 <!-- posts -->
-<%for(let x of sitemap.artgallery){%>
+<%sitemap.artgallery.forEach(x=>{%>
 	<url>
 		<loc>https://<%=sitemap.host%>/artgallery/<%=x.loc%></loc>
 		<lastmod><%=x.lastmod%></lastmod>
 		<changefreq><%=x.changefreq%></changefreq>
 		<priority><%=x.priority%></priority>
 	</url>
-<%}%>
+<%})%>
 </urlset>
