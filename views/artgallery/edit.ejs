@@ -4,7 +4,7 @@
 	</div>
 
 	<div class="row justify-content-center mb-5">
-		<div class="col col-md-9 col-lg-6" >
+		<div class="col col-md-9 col-lg-8" >
 			<form action="/artgallery/<%=artgallery.slug%>?_method=PUT" method="POST" enctype="multipart/form-data">
 				<div class="mb-3">
 					<label for="title">Title</label>
@@ -80,7 +80,7 @@
 				</div>
 				<div class="mb-3">
 					<label for="description">Description</label>
-					<textarea class="form-control" id="description" name="description" placeholder="Description" autofocus="true" rows="6"><%=artgallery.description%></textarea>
+					<textarea class="form-control" id="description" name="description" placeholder="Description" autofocus="true" rows="12"><%=artgallery.description%></textarea>
 				</div>
 				<input class="btn btn-primary btn-block" type="submit" value="Submit Artwork">
 			</form>
