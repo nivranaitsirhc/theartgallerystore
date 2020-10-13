@@ -127,7 +127,7 @@ app.use(helmet({
 	contentSecurityPolicy: {
 		directives : {
 			defaultSrc 		: [ "'self'"],
-			connectSrc 		: [ "'self'", "www.googletagmanager.com" ],
+			connectSrc 		: [ "'self'", "https:", "www.google-analytics.com" ],
 			baseUri 		: [ "'self'"],
 			fontSrc 		: [ "'self'", "https:","data:"],
 			frameAncestors 	: [ "'self'"],
