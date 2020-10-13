@@ -30,7 +30,7 @@
 			</figure>
 			<header class="mb-3">
 				<p class="wrap-p mt-4" align="justify"><%-artgallery.description%></p>
-				<h4 class="card-title wrap-p mt-3 display-5"><strong><%=artgallery.title%></h4></strong>
+				<h1 class="card-title wrap-p mt-3 display-5"><strong><%=artgallery.title%></h1></strong>
 			</header>
 			<section class="mb-3">
 				<table>
@@ -62,8 +62,8 @@
 			<%if(currentUser && artgallery.author.id.equals(currentUser._id)){%>
 				<div class="d-flex align-top my-2">
 					<div class="">
-						<a class="btn btn-warning btn-md" href="/artgallery/<%=artgallery._id%>/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
-						<form class="d-inline"action="/artgallery/<%=artgallery._id%>?_method=DELETE" method="POST">
+						<a class="btn btn-warning btn-md" href="/artgallery/<%=artgallery.slug%>/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+						<form class="d-inline"action="/artgallery/<%=artgallery.slug%>?_method=DELETE" method="POST">
 							<button class="btn btn-danger btn-md"><i class="fa fa-times" aria-hidden="true"></i>  Delete</button>
 						</form>
 					</div>
@@ -78,9 +78,9 @@
 					<h4 style="font-size: 2rem">Comments<h4>
 				</header>
 				<section class="col-6 text-right">
-					<form action="/artgallery/<%=artgallery.id%>/comments/new" method="GET">
+					<a href="/artgallery/<%=artgallery.slug%>/comments/new">
 						<button class="btn btn-primary" ><i class="fa fa-plus" aria-hidden="true"></i> Add Comment</button>
-					</form>
+					</a>
 				</section>
 				<hr>
 			</div>
@@ -102,10 +102,10 @@
 					<section class="col-lg-2 text-right my-2">
 					<%if(currentUser && comment.author.id.equals(currentUser._id)){%>
 						<div class="d-inline">
-							<a class="btn btn-warning btn-sm" href="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+							<a class="btn btn-warning btn-sm" href="/artgallery/<%=artgallery.slug%>/comments/<%=comment.id%>/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
 						</div>
 						<div class="d-inline">
-							<form class="d-inline"action="/artgallery/<%=artgallery._id%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
+							<form class="d-inline"action="/artgallery/<%=artgallery.slug%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
 								<button class="btn btn-danger btn-sm"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>
 							</form>
 						</div>

@@ -18,22 +18,22 @@
 				<div class="card bg-dark" id="card">
 			  		<section class="card-body">
 			  			<figure class="figure">
-					  		<a href="/artgallery/<%=x._id%>">
+					  		<a href="/artgallery/<%=x.slug%>">
 					  			<img class="img-fluid rounded card-img-top lazy" data-src="<%=x.image.thumb_url%>" width="<%=x.image.width%>" height="<%=x.image.height%>" src="<%=x.image.placeholder_url%>" alt="<%=x.title%>">
 					  		</a>
 				  		</figure>
 				  		<header>
-							<a href="/artgallery/<%=x._id%>">
+							<a href="/artgallery/<%=x.slug%>">
 								<h5 class="card-title"><strong><%=x.title %></strong></h5>
 							</a>
 				  		</header>
 			  			<p class="card-text"><%=x.description.substring(0,35)%>...</p>
 					</section>
 			  		<section class="card-body">
-			  			<a class="btn btn-info btn-sm" href="/artgallery/<%=x._id%>" class=""><i class="fa fa-info-circle" aria-hidden="true"></i> More info</a>
+			  			<a class="btn btn-info btn-sm" href="/artgallery/<%=x.slug%>" class=""><i class="fa fa-info-circle" aria-hidden="true"></i> More info</a>
 		  			<%if(currentUser && x.author.id.equals(currentUser._id)){%>
-		  				<a class="btn btn-warning btn-sm" href="/artgallery/<%=x._id%>/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
-						<form class="d-inline"action="/artgallery/<%=x._id%>?_method=DELETE" method="POST">
+		  				<a class="btn btn-warning btn-sm" href="/artgallery/<%=x.slug%>/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+						<form class="d-inline"action="/artgallery/<%=x.slug%>?_method=DELETE" method="POST">
 							<button class="btn btn-danger btn-sm"><i class="fa fa-times" aria-hidden="true"></i>  Delete</button>
 						</form>
 					<%}%>

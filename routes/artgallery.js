@@ -1,4 +1,4 @@
-// modules
+//modules
 const	express			= require('express'),
 		htmlSanitizer	= require('sanitize-html'),
 		mongoose 		= require('mongoose'),
@@ -8,63 +8,36 @@ const	express			= require('express'),
 		multer			= require('multer'),
 		moment			= require('moment');
 
+//models
 const 	router 		= express.Router(),
-		Artgallery	= require('../models/artgallery');
+		Artwork	= require('../models/artwork');
 		
 //middlewares
 const 	middleware 	= require('../middleware');
 
 const 	artGalleryStatusList	= require('../utils/artGalleryStatusList'),
-		artGalleryType			= require('../utils/artGalleryType');
+		artGalleryType			= require('../utils/artGalleryType'),
+		htmlSanitizerOptions 	= require('../utils/htmlSanitizerOptions');
 
-let htmlSanitizerOptions = {
-	allowedTags: [
-		"address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
-		"h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
-		"dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
-		"ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
-		"em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
-		"small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
-		"col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr","img"
-	],
-	disallowedTagsMode: 'discard',
-	allowedAttributes: {
-		a: [ 'href', 'name', 'target' ],
-		// We don't currently allow img itself by default, but this
-		// would make sense if we did. You could add srcset here,
-		// and if you do the URL is checked for safety
-		img: [ 'src' ]
-	},
-	// Lots of these won't come up by default because we don't allow them
-	selfClosing: [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ],
-	// URL schemes we permit
-	allowedSchemes: [ 'http', 'https', 'ftp', 'mailto'],
-	allowedSchemesByTag: {},
-	allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
-	allowProtocolRelative: true,
-	enforceHtmlBoundary: false
-}
 
 let storage = multer.diskStorage({
 	filename: function(req,file,cb){
 		cb(null,`${moment(Date.now()).format('YYYY-MM-DD_HH-MM-SS')}_${file.originalname}`);
 	}
 });
-
-let imageFilter = function(req,file,cb){
+let fileFilter = function(req,file,cb){
 	if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
 		return cb(new Error('Only image files are allowed'), false);
 	}
 	cb(null,true);
 }
-
-let upload = multer({storage:storage,fileFilter:imageFilter});
+let upload = multer({storage,fileFilter});
 
 
 cloudinary.config({
-	cloud_name: process.env.CLOUDINARY_cloudname,
-	api_key: process.env.CLOUDINARY_api_key,
-	api_secret: process.env.CLOUDINARY_api_secret
+	cloud_name 	: process.env.CLOUDINARY_cloudname,
+	api_key 	: process.env.CLOUDINARY_api_key,
+	api_secret 	: process.env.CLOUDINARY_api_secret
 });
 
 
@@ -74,32 +47,47 @@ router.get('/', async (req,res)=>{
 	try {
 		if(req.query.search){
 			const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-			let allartgallery = await Artgallery.find({"title":regex}).sort('-modified');
-			let queryNullMatch = allartgallery.length > 1 ? "" : req.query.search;
+			let artgallery = await Artwork.find({"title":regex}).sort('-modified');
+			let queryNullMatch = artgallery.length > 1 ? "" : req.query.search;
 		res.render("artgallery/index",{
-			artgallery 		: allartgallery,
-			page 			: 'artgallery',
-			msg_success		: `Found ${allartgallery.length} matching title(s)..`,
+			page 			: {
+				name 		: 'artgallery',
+				title 		: 'Search Art Gallery',
+				description : 'Find the one that calm\' the soul.'
+			},
+			artgallery,
+			msg_success		: `Found ${artgallery.length} matching title(s)..`,
 			emptyQueryMsg 	: queryNullMatch
 		});
 		} else {
-			let allartgallery = await Artgallery.find().sort('-modified');
+			let artgallery = await Artwork.find({}).sort('-modified');
 			res.render("artgallery/index",{
-				page 		: 'artgallery',
-				artgallery 	: allartgallery
+				page 		: {
+					name 		: 'artgallery',
+					title 		: 'Art Gallery',
+					description : 'Enjoy! the best of the best Artwork out there.'
+				},
+				artgallery 
 			});
 		}
 	}
-	catch(err){
-		console.log(err);
-		res.render('artgallery/index',{err_msg:err.message,page:'artgallery'});
+	catch(e){
+		console.log(e);
+		res.render('artgallery/index',{
+			page 	: 'artgallery',
+			err_msg : e.message
+		});
 	}
 });
 
 // new -- Display a form to add new artgallerys
 router.get('/new',middleware.isLoggedIn,(req,res)=>{
 	res.render("artgallery/new",{
-		page 		: 'artCreate',
+		page 		: {
+			name 		: 'artCreate',
+			title 		: 'New Artwork',
+			description : 'Upload the finest creation made with love and soul.'
+		},
 		statusList 	: artGalleryStatusList,
 		artType 	: artGalleryType
 	});
@@ -152,13 +140,13 @@ router.post('/new', middleware.isLoggedIn,upload.single('imageUpload'), async (r
 		newartgallery.image.uploadType 		= req.body.imageType;
 		newartgallery.image.thumb_url 		= await cloudinary.url(newartgallery.image.public_id,{secure:true,crop:'thumb',quality:30});
 		newartgallery.image.placeholder_url = await cloudinary.url(newartgallery.image.public_id,{secure:true,effect:{blur:1000},quality:10});
-		let newlyCreated = await Artgallery.create(newartgallery);
+		let newlyCreated = await Artwork.create(newartgallery);
 		req.flash('success',`Added ${newlyCreated.title}`);
-		res.redirect(`/artgallery/${newlyCreated._id}`);
+		res.redirect(`/artgallery/${newlyCreated.slug}`);
 	}
-	catch(err){
-		console.log(err)
-		req.flash('error',err.message);
+	catch(e){
+		console.log(e)
+		req.flash('error',e.message);
 		res.redirect('back');
 	}
 });
@@ -166,43 +154,53 @@ router.post('/new', middleware.isLoggedIn,upload.single('imageUpload'), async (r
 
 
 // show -- Show more info about artgallery
-router.get('/:id',(req, res)=>{
-	Artgallery.findById(req.params.id).populate("comments")
-	.then((foundartgallery)=>{
-		res.render('artgallery/show',{artgallery:foundartgallery});
-	})
-	.catch((err)=>{
-		console.log(err)
-		req.flash('error',err.message);
+router.get('/:slug', async (req, res)=>{
+	try {
+		let artgallery = await Artwork.findOne({slug:req.params.slug}).populate('comments');//.populate({path: "comments",options:{sort: {'modified': -1}}}) //|| await Artwork.findById(req.params.id).populate("comments")
+			res.render('artgallery/show',{
+				page 		: {
+					name 		: 'artwork',
+					title 		: artgallery.title,
+					description : `${artgallery.title} - ${artgallery.description.substring(0,135)}`
+				},
+				artgallery
+			});
+	}
+	catch(e){
+		console.log(e)
+		req.flash('error',e.message);
 		res.redirect('/artgallery');
-	});
+	}
 });
 
 
 // Edit -- edit artgallery
-router.get('/:id/edit', middleware.checkArtgalleryOwnership,(req,res)=>{
-	Artgallery.findById(req.params.id)
-	.then((foundartgallery)=>{
+router.get('/:slug/edit', middleware.checkArtgalleryOwnership, async (req,res)=>{
+	try {
+		let artgallery = await Artwork.findOne({slug:req.params.slug})//||await Artwork.findById(req.params.id)
 		res.render('artgallery/edit',{
-			page 		: 'artEdit',
-			artgallery 	: foundartgallery,
+			page 		: {
+				name 		: 'artEdit',
+				title 		: artgallery.title,
+				description : `Edit your creation - ${artgallery.title}`
+			},
+			artgallery,
 			statusList 	: artGalleryStatusList,
 			artType 	: artGalleryType
 		});
-	})
-	.catch((err)=>{
-		console.log(err);
-		req.flash('error',err.message);
-		redirect('/artgallery/'+req.parms.id)
-	});
+	}
+	catch(e){
+		console.log(e);
+		req.flash('error',e.message);
+		redirect(`/artgallery/${req.parms.slug}`)
+	};
 });
 
 // // Update -- update artgallery
-router.put('/:id',middleware.checkArtgalleryOwnership,upload.single('imageUpload'), async (req,res)=>{
+router.put('/:slug',middleware.checkArtgalleryOwnership,upload.single('imageUpload'), async (req,res)=>{
 	try {
-		let foundartgallery = await Artgallery.findById(req.params.id);
-		
-		
+		let artwork = await Artwork.findOne({slug:req.params.slug});//||await Artwork.findById(req.params.id);
+
 		if(req.body.selectUploadType !== 'none'){
 			let imgPath;
 			switch (req.body.selectUploadType) {
@@ -217,10 +215,10 @@ router.put('/:id',middleware.checkArtgalleryOwnership,upload.single('imageUpload
 			}
 
 
-			if(foundartgallery.image.public_id){
-				await cloudinary.uploader.destroy(foundartgallery.image.public_id,{invalidate:true});
+			if(artwork.image.public_id){
+				await cloudinary.uploader.destroy(artwork.image.public_id,{invalidate:true});
 			}
-			foundartgallery.image = await cloudinary.uploader.upload(imgPath,
+			artwork.image = await cloudinary.uploader.upload(imgPath,
 				{
 					use_filename	:true,
 					folder 			: `artgallery/post/${req.user.username}/${req.body.title}`,
@@ -232,38 +230,39 @@ router.put('/:id',middleware.checkArtgalleryOwnership,upload.single('imageUpload
 					quality : "auto:best"
 				}
 			);
-			foundartgallery.image.uploadType 		= req.body.imageType;
-			foundartgallery.image.thumb_url 		= await cloudinary.url(foundartgallery.image.public_id,{secure:true,crop:'thumb',quality:30});
-			foundartgallery.image.placeholder_url 	= await cloudinary.url(foundartgallery.image.public_id,{secure:true,effect:{blur:1000},quality:10});
+			artwork.image.uploadType 		= req.body.imageType;
+			artwork.image.thumb_url 		= await cloudinary.url(artwork.image.public_id,{secure:true,crop:'thumb',quality:30});
+			artwork.image.placeholder_url 	= await cloudinary.url(artwork.image.public_id,{secure:true,effect:{blur:1000},quality:10});
 		}
 
 		let artType = JSON.parse(req.body.artType);
 		if(artType.index === 3){
 			artType.name = req.body.artTypeOtherName;
 		}
-		foundartgallery.title 			= req.body.title;
-		foundartgallery.price 			= req.body.price;
-		foundartgallery.status 			= JSON.parse(req.body.status);
-		foundartgallery.artType 		= artType;
-		foundartgallery.description 	= htmlSanitizer(req.body.description,htmlSanitizerOptions);
-		foundartgallery.author.id 		= req.user._id;
-		foundartgallery.author.username = req.user.username;
-		foundartgallery.author.fullName = req.user.fullName;
-		foundartgallery.save();
-		req.flash('success', `Updated ${foundartgallery.title}`);
-		res.redirect(`/artgallery/${req.params.id}`);
+		artwork.title 			= req.body.title;
+		artwork.price 			= req.body.price;
+		artwork.status 			= JSON.parse(req.body.status);
+		artwork.artType 		= artType;
+		artwork.description 	= htmlSanitizer(req.body.description,htmlSanitizerOptions);
+		artwork.author.id 		= req.user._id;
+		artwork.author.username = req.user.username;
+		artwork.author.fullName = req.user.fullName;
+
+		artwork = await Artwork.findByIdAndUpdate(artwork._id,artwork);
+		req.flash('success', `Updated ${artwork.title}`);
+		res.redirect(`/artgallery/${artwork.slug}`);
 	}
-	catch(err){
-		console.log(err);
-		req.flash('error',err.message);
+	catch(e){
+		console.log(e);
+		req.flash('error',e.message);
 		res.redirect('back');
 	}
 });
 
 // // destroy -- artgallery
-router.delete('/:id',middleware.checkArtgalleryOwnership, async (req,res)=>{
+router.delete('/:slug',middleware.checkArtgalleryOwnership, async (req,res)=>{
 	try {
-		let deleteartgallery = await Artgallery.findById(req.params.id);
+		let deleteartgallery =  await Artwork.findOne({slug:req.params.slug});//|| await Artwork.findById(req.params.id);
 		if(deleteartgallery.image.public_id) {
 			await cloudinary.uploader.destroy(deleteartgallery.image.public_id,{invalidate:true});
 		}
@@ -271,9 +270,9 @@ router.delete('/:id',middleware.checkArtgalleryOwnership, async (req,res)=>{
 		req.flash('success',`You have successfully deleted ${deleteartgallery.title}`);
 		res.redirect('/artgallery');
 	}
-	catch(err){
-		console.log(err);
-		req.flash('error',err.message);
+	catch(e){
+		console.log(e);
+		req.flash('error',e.message);
 		res.redirect('back')
 	};
 });

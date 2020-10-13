@@ -12,18 +12,18 @@ const	express 			= require('express'),
 		localStrategy 		= require('passport-local'),
 		session 			= require('express-session'),
 		MongoDBStore 		= require('connect-mongodb-session')(session),
-		helmet 				= require("helmet");
+		crypto 				= require('crypto'),
+		helmet 				= require('helmet');
 
 // models
-const	User 		= require('./models/user'),
-		Campground 	= require('./models/artgallery'),
-		Comment 	= require('./models/comment');
+const	User 		= require('./models/user');
 
 // routes
 const 	accountRoutes 		= require('./routes/accounts'),
 		artgalleryRoutes	= require('./routes/artgallery'),
 		commentsRoutes 		= require('./routes/comments'),
-		indexRoutes			= require('./routes/index');
+		indexRoutes			= require('./routes/index'),
+		sitemap 			= require('./routes/sitemap');
 
 // middlewares
 const 	middleware 	= require('./middleware');
@@ -39,60 +39,57 @@ app.set('view engine', 'ejs');
 // express - use moment
 app.locals.moment = moment;
 
-//
-app.use(express.json());
 
 // express use the bodyparser module
 app.use(bodyParser.urlencoded({extended:true}));
 
 // express serve static files
-app.use(express.static(__dirname+'/public'));
+app.use(express.static(`${__dirname}/public`));
 // express - use flash
 app.use(flash());
 // express - use method-override
 app.use(methodOverride('_method'));
 //
-app.use(function(req, res, next) {
+app.use((req, res, next)=>{
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
+let dbURL = process.env.MONGODB_URL || 'mongodb://localhost:27017/artgallery_db'
 
-
-// config connect to mongodb 
-const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/artgallery_db'
-mongoose.connect(MONGODB_URL, {
+// config connect to mongodb  
+mongoose.connect(dbURL, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
-	useFindAndModify: true
+	useFindAndModify: false
 });
 
 // config mongodbstore
 const store = new MongoDBStore({
-	uri: MONGODB_URL,
+	uri: dbURL,
 	collection: 'mySessions'
 });
 
 // Cache Control
 app.use(cache({
-	'/assets/css/**' : 'public,no-cache,max-age=0,must-revalidate',
-	'/assets/js/**' : 'public,no-cache,max-age=0,must-revalidate',
+	'/assets/css/**' 	: 'public,no-cache,max-age=0,must-revalidate',
+	'/assets/js/**' 	: 'public,no-cache,max-age=0,must-revalidate',
 	'/assets/static/**' : 'public,max-age=604800, immutable',
-	'/**' : 'public,no-cache,max-age=856800,must-revalidate'
+	'/**' 				: 'public,no-cache,max-age=856800,must-revalidate'
 }));
 
 // session-configuration
 let sessionConfig = {
 	secret: process.env.SESSION_SECRET,
 	cookie : {
-		path: '/',
-		secure: false,
-		httpOnly: true,
-		domain: '',
-		maxAge: 604_800_000, // 1 week
-		sameSite: true
+		path		: '/',
+		secure		: true,
+		httpOnly	: true,
+		//domain		: 'theartstoregallery.herokuapp.com',
+		maxAge 		: 43_200_000, // 12hrs
+		sameSite	: true
 	},
 	store: store, // use mongodbstrore
 	resave: false,
@@ -100,11 +97,10 @@ let sessionConfig = {
 };
 
 if(process.env.NODE_ENV !== 'production'){
-	sessionConfig.cookie.secure = false;
-	sessionConfig.cookie.httpOnly = false;
-	sessionConfig.cookie.domain = '';
-	sessionConfig.cookie.sameSite = false;
-	console.log('running in development')
+	sessionConfig.cookie.secure 	= false;
+	sessionConfig.cookie.httpOnly 	= false;
+	sessionConfig.cookie.sameSite 	= false;
+	console.log('cookies set for development')
 }
 app.use(session(sessionConfig));
 
@@ -130,24 +126,34 @@ app.use((req,res,next)=>{
 app.use(helmet({
 	contentSecurityPolicy: {
 		directives : {
-			defaultSrc : [ "'self'"],
-			baseUri : [ "'self'"],
-			fontSrc : [ "'self'", "https:","data:"],
-			frameAncestors : [ "'self'"],
-			imgSrc : [ "'self'", "https:","data:" ],
-			objectSrc : [ "'none'"],
-			scriptSrc : [ "'self'", "'unsafe-inline'"],
-			scriptSrcAttr : [ "'none'"],
-			styleSrc : [ "'self'", "https:", "'unsafe-inline'" ]
+			defaultSrc 		: [ "'self'"],
+			baseUri 		: [ "'self'"],
+			fontSrc 		: [ "'self'", "https:","data:"],
+			frameAncestors 	: [ "'self'"],
+			imgSrc 			: [ "'self'", "https:","data:" ],
+			objectSrc 		: [ "'none'"],
+			scriptSrc 		: [ "'self'", "'unsafe-inline'"],
+			scriptSrcAttr 	: [ "'none'"],
+			styleSrc 		: [ "'self'", "https:", "'unsafe-inline'" ]
 		}
 	}
 }));
 
- // Routes
+// require('./seeds')();
+// redirect to https
+if(process.env.NODE_ENV === 'production') {
+	app.get('*',function(req,res,next){
+		if(req.headers['x-forwarded-proto']!='https') {
+			res.redirect(`https://${req.headers.host}${req.url}`)
+		} else next()
+	});
+}
+// Routes;
 app.use('/',indexRoutes);
 app.use('/artgallery',artgalleryRoutes);
-app.use('/artgallery/:id/comments',commentsRoutes);
+app.use('/artgallery/:slug/comments',commentsRoutes);
 app.use('/user',accountRoutes);
+app.use('/sitemap',sitemap);
 
 // PAGE NOT FOUND 404
 app.get('*',(req,res)=>{
@@ -157,5 +163,5 @@ app.get('*',(req,res)=>{
 // express listen
 let port = process.env.PORT || 3000
 app.listen(port, ()=> {
-	console.log("Art Store Gallery Server is Listening...")
+	console.log(`Art Store Gallery Server is Listening...\n${moment(Date.now()).format('YYYY-MM-DD')}`)
 });

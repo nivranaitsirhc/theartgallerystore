@@ -1,12 +1,13 @@
-// modules
+//modules
 const 	express 	= require('express'),
-				passport 	= require('passport'),
-				async     = require('async'),
-				nodemailer = require('nodemailer'),
-				crypto    = require('crypto');
+		passport 	= require('passport'),
+		nodemailer 	= require('nodemailer'),
+		crypto    	= require('crypto'),
+	 	router		= express.Router();
 
-const 	router		 = express.Router(),
-				User	     = require('../models/user');
+//models
+const 	User	    = require('../models/user');
+		//Token 		= require('../models/token');
 
 //middleware
 const   middleware = require('../middleware');
@@ -14,19 +15,29 @@ const   middleware = require('../middleware');
 
 //root route
 router.get("/", (req, res)=>{
-		res.render("landing",{page:'landing'});
+	res.render("landing",{
+		page: {
+			name 	: 'landing',
+			title 	: 'The Art Store Gallery'
+		}
+	});
 });
 
 // show register form
 router.get("/signup", (req, res)=>{
-		res.render("auth/signup",{page:'auth'});
+	res.render("auth/signup",{
+		page: {
+			name 		: 'auth',
+			title 		: 'Sign-up to ArtStoreGallery!',
+			description : 'Sign-up to Art Store Gallery the best Art Gallery out there.'
+		}
+	});
 });
 
 //handle sign up logic
 router.post("/signup", async (req, res)=>{
 	try {
 		if(req.body.newUser.password !== req.body.newUser.passwordConfirm) throw {message:'Server Message: Password does not match'};
-
 		req.body.password = req.body.newUser.password;
 		req.body.username = req.body.newUser.username;
 		req.body.newUser.fullName  = `${req.body.newUser.firstName} ${req.body.newUser.middleName} ${req.body.newUser.lastName}`;
@@ -45,7 +56,13 @@ router.post("/signup", async (req, res)=>{
 
 //show login form
 router.get("/signin", (req, res)=>{
-	res.render("auth/signin",{page: 'auth'});
+	res.render("auth/signin",{
+		page: {
+			name 		: 'auth',
+			title 		: 'Sign-in to ArtStore Gallery',
+			description : 'Welcome back to Art Store Gallery, Please sign-in to see the best Artwork out there'
+		}
+	});
 });
 
 //handling login logic
@@ -55,23 +72,40 @@ router.post("/signin",passport.authenticate("local",
 			failureRedirect: "/signin",
 			failureFlash: true
 		}
-	), (req, res)=>{
-	req.flash('success', `Welcome back ${req.body.username}.`);
-	req.session.returnTo = !req.session.returnTo ? '/artgallery' : req.session.returnTo;
-	res.redirect(req.session.returnTo);
-	req.session.returnTo = "";
-});
+	),
+	async (req, res)=>{
+		try {
+			if (req.body.remember_me){ 
+				req.session.cookie.maxAge =  604_800_000 // 7days
+			}
+			req.flash('success', `Welcome back ${req.body.username}.`);
+			req.session.returnTo = !req.session.returnTo ? '/artgallery' : req.session.returnTo;
+			res.redirect(req.session.returnTo);
+			req.session.returnTo = "";
+		}
+		catch(e){
+			console.log(e);
+			res.redirect('back')
+		}
+	}
+);
 
 // logout route
 router.get("/logout", (req, res)=>{
 	 req.logout();
-	 req.flash("success", "Logout sucessfully..");
+	 req.flash("success", `${req.body.username} sucessfully..`);
 	 res.redirect("/artgallery");
 });
 
 // forgot password
 router.get("/forgot", (req,res)=>{
-	res.render('./auth/forgot',{page:'auth'});
+	res.render('./auth/forgot',{
+		page: {
+			name 		: 'auth',
+			title 		: 'Forgot password?',
+			description : 'Did you forgot your password? No worries! We got you covered, just recovery it with your email.'
+		}
+	});
 });
 
 // forgot password - send email
@@ -115,7 +149,14 @@ router.get('/reset/:token', (req,res)=>{
 	User.findOne({resetPasswordToken: req.params.token,resetPasswordExpires: {$gt:Date.now()}})
 	.then((user)=>{
 		if(!user<1){
-			res.render('./auth/reset',{page:'auth',token:req.params.token})
+			res.render('./auth/reset',{
+				page	: {
+					name 		: 'auth',
+					title 		: 'Change your password!',
+					description	: 'Change your password with a valid token.'
+				},
+				token 	: req.params.token
+			});
 		} else {
 			req.flash('error', 'You accessing an expired page..')
 			res.redirect('/artgallery');
@@ -159,12 +200,11 @@ router.post('/reset/:token', async (req,res)=>{
 });
 
 
-
 //mail transport config
 let smtpTransport = nodemailer.createTransport({
 	service: 'Gmail',
 	auth: {
-		type:         'OAuth2',
+		type :        'OAuth2',
 		user:         process.env.NODE_MAILER_user,
 		clientSecret: process.env.NODE_MAILER_clientSecret,
 		clientId:     process.env.NODE_MAILER_clientId,

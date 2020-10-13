@@ -5,7 +5,7 @@
 	</div>
 	<div class="row mb-5 justify-content-center">
 		<div class="col col-md-9 col-lg-6">
-			<form class="form-style" action="/artgallery/<%=artgallery._id%>/comments" method="POST">
+			<form class="form-style" action="/artgallery/<%=artgallery.slug%>/comments/new" method="POST">
 				<div class="form-group mb-3">
 					<label for="commentTitle">Title <small>(optional)</small></label>
 					<input id="commentTitle" class="form-control" type="text" name="comment[title]" placeholder="Comment Title.." style="font-weight: bold">
@@ -27,7 +27,7 @@
 				</div>
 			</form>
 			<div class="mt-2">
-				<a href="/artgallery/<%=artgallery_id%>"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>  Go Back</a>
+				<a href="/artgallery/<%=artgallery.slug%>"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>  Go Back</a>
 			</div>
 		</div>
 	</div>

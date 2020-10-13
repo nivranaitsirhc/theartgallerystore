@@ -1,6 +1,6 @@
 const   parseUrl  = require('parse-url');
 
-const	Artgallery 	= require('../models/artgallery'),
+const	Artgallery 	= require('../models/artwork'),
 		Comment 	= require('../models/comment');
 
 const middlewareObj = {};
@@ -25,8 +25,8 @@ middlewareObj.isLoggedIn = async (req, res, next) => {
 middlewareObj.checkArtgalleryOwnership = async (req, res, next) => {
 	try {
 		if(req.isAuthenticated()){
-			let foundArtgallery = await Artgallery.findById(req.params.id);
-			if(foundArtgallery.author.id.equals(req.user._id)){
+			let foundArtwork = await Artgallery.findOne({slug:req.params.slug});
+			if(foundArtwork.author.id.equals(req.user._id)){
 				next();
 			} else {
 				req.flash('error', 'You dont have permission to do that');

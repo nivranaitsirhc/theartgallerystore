@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-PH">
 <head>
-	<meta name="description" content="
+	<meta name="description" <%if(typeof page !== 'undefined' && page.description){%>content="<%=page.description%>"<%}else{%>
+	content="
 	A simple Art Store Gallery where you can share your creations.
-	Designed & Developed by: Christian Arvin C. Cabo,
-	email: cacc.greenleaflabworks@gmail.com">
+	Designed & Developed by: Christian Arvin C. Cabo
+	email: cacc.greenleaflabworks@gmail.com"
+<%}%>>
 	<!-- bootstrap required meta-tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="canonical" href="https://theartstoregallery.herokuapp.com">
-<%if(typeof page !== 'undefined' && page === 'artgallery'){%>
+<%if(typeof page !== 'undefined' && page.name === 'artgallery'){%>
 	<!-- resolve cloudinary -->
 	<link rel="dns-prefetch" href="https://cloudinary.com">
 <%}%>
@@ -24,11 +26,11 @@
 	<!-- Custom Stylesheet -->
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 <%if(typeof page !== 'undefined'){%>
-<%if(page === 'auth'){%>
+<%if(page.name === 'auth'){%>
 	<!-- Auth Style -->
 	<link rel="stylesheet" type="text/css" href="/assets/css/auth.css">
 <%}%>
-<%if(page === 'landing'){%>
+<%if(page.name === 'landing'){%>
 	<!-- Landing Style -->
 	<link rel="stylesheet" type="text/css" href="/assets/css/landing.css">
 <%}%>
@@ -39,7 +41,7 @@
 	<script type="text/javascript" src="/assets/js/lazyImage.js" defer></script>
 	<!-- favicon -->
 	<link rel="icon" type="img/gif" href="/assets/static/favicon.ico">
-	<title>The Art Store Gallery</title>
+	<title><%if(typeof page !== 'undefined'){%> <%=page.title%> <%}else{%>The Art Store Gallery<%}%></title>
 </head>
 <body>
 
@@ -76,9 +78,9 @@
 		</li>
 	<%} else {%>
 		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="text-transform: lowercase"><%=currentUser.firstName%> <i class="fa fa-user-circle" aria-hidden="true"></i> </a>
+			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="text-transform: lowercase"><i class="fa fa-user-circle" aria-hidden="true"></i> <%=currentUser.firstName%></a>
 			<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<li><a class="dropdown-item" href="/user/<%=currentUser.id%>"> <i class="fa fa-address-book-o" aria-hidden="true"></i> Profile</a></li>
+				<li><a class="dropdown-item" href="/user/<%=currentUser.id%>"><i class="fa fa-address-book-o" aria-hidden="true"></i> Profile</a></li>
 				<li><hr class="dropdown-divider"></li>
 				<li><a class="dropdown-item" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
 			</ul>

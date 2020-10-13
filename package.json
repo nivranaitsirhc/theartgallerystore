@@ -28,6 +28,7 @@
     "method-override": "^3.0.0",
     "moment": "^2.28.0",
     "mongoose": "^5.10.6",
+    "mongoose-slug-plugin": "^2.1.0",
     "multer": "^1.4.2",
     "nodemailer": "^6.4.11",
     "parse-url": "^5.0.2",

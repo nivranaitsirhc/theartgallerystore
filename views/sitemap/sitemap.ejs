@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<!-- landing -->
+	<url>
+		<loc>https://<%=sitemap.host%></loc>
+		<lastmod>2020-10-12</lastmod>
+		<!-- <changefreq>yearly</changefreq> -->
+		<proirity>0.4</proirity>
+	</url>
+<!-- about	 -->
+	<url>
+		<loc>https://<%=sitemap.host%>/about</loc>
+		<lastmod>2020-10-12</lastmod>
+		<!-- <changefreq>yearly</changefreq> -->
+		<proirity>0.4</proirity>
+	</url>
+<!-- profile -->
+	<url>
+		<loc>https://<%=sitemap.host%>/profile</loc>
+		<lastmod>2020-10-12</lastmod>
+		<!-- <changefreq>yearly</changefreq> -->
+		<proirity>0.4</proirity>
+	</url>
+<!-- sign-in -->
+	<url>
+		<loc>https://<%=sitemap.host%>/signin</loc>
+		<lastmod>2020-10-12</lastmod>
+		<!-- <changefreq>yearly</changefreq> -->
+		<proirity>0.4</proirity>
+	</url>
+<!-- signup -->
+	<url>
+		<loc>https://<%=sitemap.host%>/signup</loc>
+		<lastmod>2020-10-12</lastmod>
+		<!-- <changefreq>yearly</changefreq> -->
+		<proirity>0.4</proirity>
+	</url>
+<!-- reset-password -->
+	<url>
+		<loc>https://<%=sitemap.host%>/reset</loc>
+		<lastmod>2020-10-12</lastmod>
+		<!-- <changefreq>yearly</changefreq> -->
+		<proirity>0.4</proirity>
+	</url>
+<!-- posts -->
+<%for(let x of sitemap.artgallery){%>
+	<url>
+		<loc>https://<%=sitemap.host%>/artgallery/<%=x.loc%></loc>
+		<lastmod><%=x.lastmod%></lastmod>
+		<changefreq><%=x.changefreq%></changefreq>
+		<proirity><%=x.priority%></proirity>
+	</url>
+<%}%>
+</urlset>
