@@ -132,7 +132,7 @@ app.use(helmet({
 			frameAncestors 	: [ "'self'"],
 			imgSrc 			: [ "'self'", "https:","data:" ],
 			objectSrc 		: [ "'none'"],
-			scriptSrc 		: [ "'self'", "'unsafe-inline'"],
+			scriptSrc 		: [ "'self'", "'unsafe-inline'","https:", "www.googletagmanager.com"],
 			scriptSrcAttr 	: [ "'none'"],
 			styleSrc 		: [ "'self'", "https:", "'unsafe-inline'" ]
 		}
