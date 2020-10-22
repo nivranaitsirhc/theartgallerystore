@@ -56,7 +56,6 @@ router.post("/signup", async (req, res)=>{
 
 //show login form
 router.get("/signin", (req, res)=>{
-	console.log(req.cookies.accessToken);
 	res.render("auth/signin",{
 		page: {
 			name 		: 'auth',
@@ -83,7 +82,6 @@ router.post("/signin",passport.authenticate("local",
 			req.session.returnTo = !req.session.returnTo ? '/artgallery' : req.session.returnTo;
 			res.redirect(req.session.returnTo);
 			req.session.returnTo = "";
-			console.log(res.cookies.accessToken);
 		}
 		catch(e){
 			console.log(e);
