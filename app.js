@@ -87,13 +87,13 @@ let sessionConfig = {
 		path		: '/',
 		secure		: true,
 		httpOnly	: true,
-		//domain		: 'theartstoregallery.herokuapp.com',
+		domain		: 'theartstoregallery.herokuapp.com',
 		maxAge 		: 43_200_000, // 12hrs
 		sameSite	: true
 	},
 	store: store, // use mongodbstrore
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: true
 };
 
 if(process.env.NODE_ENV !== 'production'){
@@ -113,7 +113,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-// meddleware to make available of our currentUser in all routes. used in header.ejs
+// middleware to make available of our currentUser in all routes. used in header.ejs
 app.use((req,res,next)=>{
 	res.locals.currentUser	= req.user;
 	res.locals.msg_error	= req.flash('error');
@@ -141,6 +141,7 @@ app.use(helmet({
 }));
 
 // require('./seeds')();
+
 // redirect to https
 if(process.env.NODE_ENV === 'production') {
 	app.get('*',function(req,res,next){
