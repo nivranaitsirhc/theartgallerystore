@@ -85,7 +85,7 @@ let sessionConfig = {
 	secret: process.env.SESSION_SECRET,
 	cookie : {
 		path		: '/',
-		secure		: true,
+		secure		: false,
 		httpOnly	: true,
 		domain		: 'theartstoregallery.herokuapp.com',
 		maxAge 		: 43_200_000, // 12hrs
