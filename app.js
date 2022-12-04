@@ -72,12 +72,6 @@ const connectDB = async () => {
   }
 }
 
-//Connect to the database before listening
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log("listening for requests");
-    })
-})
 
 // config mongodbstore
 const store = new MongoDBStore({
@@ -180,6 +174,14 @@ app.get('*',(req,res)=>{
 
 // express listen
 let port = process.env.PORT || 3000
-app.listen(port, ()=> {
-	console.log(`Art Store Gallery Server is Listening...\n${moment(Date.now()).format('YYYY-MM-DD')}`)
-});
+
+
+//Connect to the database before listening
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Art Store Gallery Server is Listening...\n${moment(Date.now()).format('YYYY-MM-DD')}`)
+    })
+})
+// app.listen(port, ()=> {
+//	console.log(`Art Store Gallery Server is Listening...\n${moment(Date.now()).format('YYYY-MM-DD')}`)
+// });
