@@ -173,7 +173,7 @@ app.get('*',(req,res)=>{
 
 
 // express listen
-let port = process.env.PORT || 3000
+let PORT = process.env.PORT || 3000
 
 
 //Connect to the database before listening
@@ -182,6 +182,6 @@ connectDB().then(() => {
         console.log(`Art Store Gallery Server is Listening...\n${moment(Date.now()).format('YYYY-MM-DD')}`)
     })
 })
-// app.listen(port, ()=> {
+// app.listen(PORT, ()=> {
 //	console.log(`Art Store Gallery Server is Listening...\n${moment(Date.now()).format('YYYY-MM-DD')}`)
 // });
