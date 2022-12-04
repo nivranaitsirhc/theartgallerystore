@@ -28,8 +28,6 @@ const 	accountRoutes 		= require('./routes/accounts'),
 // middlewares
 const 	middleware 	= require('./middleware');
 
-
-
 // express 
 const app = express();
 // use compression
@@ -56,15 +54,30 @@ app.use((req, res, next)=>{
   next();
 });
 
+
 let dbURL = process.env.MONGODB_URL || 'mongodb://localhost:27017/artgallery_db'
 
-// config connect to mongodb  
-mongoose.connect(dbURL, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true,
-	useFindAndModify: false
-});
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(dbURL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useCreateIndex: true,
+		useFindAndModify: false
+	});
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
+
+//Connect to the database before listening
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log("listening for requests");
+    })
+})
 
 // config mongodbstore
 const store = new MongoDBStore({
@@ -161,6 +174,9 @@ app.use('/sitemap',sitemap);
 app.get('*',(req,res)=>{
 	res.render('./404');
 });
+
+
+
 
 // express listen
 let port = process.env.PORT || 3000
