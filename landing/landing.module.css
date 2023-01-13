@@ -1,0 +1,87 @@
+.landing_container {
+  background-color: #000;
+  height: 100vh
+}
+
+.landing_header {
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  padding-top: calc(100vh * 0.36);
+  /* height: 80vh; */
+}
+
+.landing_header_h1 {
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(31, 38, 107, 0.9);
+}
+
+#slideshow { 
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#slideshow li { 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: imageAnimation 50s linear infinite; 
+}
+
+#slideshow li:nth-child(1) { 
+  background-image: linear-gradient(0deg, #0093E9 0%, #80D0C7 100%); 
+}
+#slideshow li:nth-child(2) { 
+  background-image: linear-gradient(60deg, #16a085 0%, #f4d03f 100%);
+  animation-delay: 10s; 
+}
+#slideshow li:nth-child(3) { 
+  background-image: linear-gradient(120deg, #64b3f4 0%, #c2e59c 100%);
+  animation-delay: 20s; 
+}
+#slideshow li:nth-child(4) { 
+  background-image: linear-gradient(180deg, #cc208e 0%, #6713d2 100%);
+  animation-delay: 30s; 
+}
+#slideshow li:nth-child(5) { 
+  background-image: linear-gradient(240deg, #243949 0%, #517fa4 100%);
+  animation-delay: 40s; 
+}
+
+@keyframes imageAnimation { 
+  0% { 
+    opacity: 0; 
+    animation-timing-function: ease-in;
+  }
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    opacity: 1
+  }
+  30% {
+    opacity: 0
+  }
+}
+
+/* Older browser support - .no-cssanimations class added by modernizr */
+.no-cssanimations #slideshow li {
+    opacity: 1;
+}
+
+
